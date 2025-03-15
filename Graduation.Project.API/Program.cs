@@ -11,7 +11,7 @@ namespace Graduation.Project.API
 
 			// Add services to the container.
 
-			builder.Services.AddDependency();
+			builder.Services.AddDependency(builder.Configuration);
 
 			//builder.Services.AddControllers();
 			//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

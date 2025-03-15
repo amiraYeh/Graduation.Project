@@ -1,0 +1,88 @@
+﻿using GP.Focusi.APIs.Errors;
+using GP.Focusi.Core.DTOs.Auth;
+using GP.Focusi.Core.Entites.Identity;
+using GP.Focusi.Core.ServicesContract;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+
+namespace GP.Focusi.API.Controllers
+{
+	
+	public class AccountController : BaseAppController
+	{
+		private readonly UserManager<AppUserChild> _userManager;
+		private readonly IUserService _userService;
+
+		public AccountController(UserManager<AppUserChild> userManager,IUserService userService)
+		{
+			_userManager = userManager;
+			_userService = userService;
+		}
+
+		[HttpPost("login")]
+		 public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+		{
+			var user = await _userService.LoginAsync(loginDto);
+			if (user is null) return Unauthorized(new ApiErrorResponse(StatusCodes.Status401Unauthorized));
+
+			return Ok(user);
+		}
+
+		[HttpPost("register")]
+		public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
+		{
+			var user = await _userService.RegisterAsync(registerDto);
+			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest,"Invalid Reggisteration"));
+
+			return Ok(user);
+		}
+
+		[HttpGet("logout")]
+		[Authorize]
+		public async Task<ActionResult> LogOut()
+		{
+			var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
+			if (userEmail is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+
+			var user = await _userService.LogOutAsync(userEmail);
+
+			if (user is not null && user.Token == "0" ) return Ok(new { message = "Logged Out Successfuly" });
+
+			return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Logged Out Falid !!"));
+
+		}
+
+		[HttpGet("CurrentUser")]
+		[Authorize]
+		public async Task<ActionResult> GetCurrentUser()
+		{
+			var userEmail = User.FindFirstValue(ClaimTypes.Email);
+
+			if (userEmail is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+
+			var user = await _userService.GetCurrentUserAsync(userEmail);
+			
+			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+		
+			return Ok(user);
+		}
+
+		[HttpPost("forgetpassword")]
+		public async Task<ActionResult> ForgetPassword([FromBody]string email)
+		{
+			var user = await _userManager.FindByEmailAsync(email);
+			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest,"Operation Falid!!"));
+
+			 await _userService.ForgetPasswordAsync(email);
+			//if (!IsSuccessed) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Operation Falid!!"));
+			
+			return Ok(new {message= "Email sended Successfuly"});
+		}
+
+
+	}
+}

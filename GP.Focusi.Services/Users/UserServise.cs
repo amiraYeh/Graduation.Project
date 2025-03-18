@@ -15,6 +15,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Azure.Core;
 using Microsoft.AspNetCore.WebUtilities;
+using Newtonsoft.Json.Linq;
+
 
 namespace GP.Focusi.Services.Users
 {
@@ -24,12 +26,12 @@ namespace GP.Focusi.Services.Users
 		private readonly SignInManager<AppUserChild> _signInManager;
 		private readonly ITokenService _tokenService;
 		private readonly IConfiguration _configuration;
-		private readonly IEmailService _emailService;
+		private readonly IEmailSenderService _emailService;
 
 		public UserServise(UserManager<AppUserChild> userManager, 
 			SignInManager<AppUserChild> signInManager,
 			ITokenService tokenService, IConfiguration configuration,
-			IEmailService  emailService)
+			IEmailSenderService emailService)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
@@ -44,7 +46,8 @@ namespace GP.Focusi.Services.Users
 			if (user is null) return null;
 		
 			var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password,false);
-			if (!result.Succeeded) return null;
+			if (!result.Succeeded && await _userManager.IsEmailConfirmedAsync(user) is false) 
+				return null;
 
 			return new UserDto()
 			{
@@ -65,19 +68,48 @@ namespace GP.Focusi.Services.Users
 				Age = registerDto.Age,
 				Gender = registerDto.Gender,
 				UserName = registerDto.Email.Split('@')[0],
-				DateOfCreation = registerDto.DateOfCreation
+				DateOfCreation = registerDto.DateOfCreation,
+				
 
 			};
 			var result = await _userManager.CreateAsync(user, registerDto.Password);
 			if (!result.Succeeded) return null;
+
+			
+			var confirmToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+			var encodedConfirmTolen = Encoding.UTF8.GetBytes(confirmToken);
+			var validConfirmToken = WebEncoders.Base64UrlEncode(encodedConfirmTolen);
+
+			string url = $"{_configuration["BaseURL"]}/api/Account/confirmEmail?userId={user.Id}&token={validConfirmToken}";
+
+			_emailService.SendAnEmail(user.Email, "Confirmation Focusi Account Email","To Confirme Your Email click here\n"+ url);
+		
 			return new UserDto()
 			{
 				Name = user.Name,
 				Email = user.Email,
 				Token = await _tokenService.CreateTokenAsync(user, _userManager)
 			};
+
+		
 		}
 			
+		public async Task<string> ConfirmAnEmailAsync(string userId, string token)
+		{
+			var user = await _userManager.FindByIdAsync(userId);
+			if (user is null) return null;
+
+			var decodedToken = WebEncoders.Base64UrlDecode(token);
+			var normalToken = Encoding.UTF8.GetString(decodedToken);
+
+			var result = await _userManager.ConfirmEmailAsync(user, normalToken);
+
+			if (!result.Succeeded) return null;
+
+			await _userManager.ConfirmEmailAsync(user, normalToken);
+
+			return result.ToString();
+		}
 		public async Task<bool> ChechEmailExistAsync(string email)
 		{
 			return await _userManager.FindByEmailAsync(email) is not null;
@@ -128,14 +160,12 @@ namespace GP.Focusi.Services.Users
 			var encodedTolen = Encoding.UTF8.GetBytes(token);
 			var validToken = WebEncoders.Base64UrlEncode(encodedTolen);
 
-			string url = $"{_configuration["BaseURL"]}/ResetPassword?email={email}&token={validToken}";
-			var sendingMail = new SendingEmail()
-			{
-				To= email,
-				Subject= "Reset Password Mail",
-				Body= url
-			};
-			await _emailService.SendEMailAsync(sendingMail.To,sendingMail.Subject, sendingMail.Body);
+			string url = $"{_configuration["BaseURL"]}/api/Account/resetPassword?email={email}&token={validToken}";
+
+			 _emailService.SendAnEmail(email, "Reset Password Email", "To Reset Your Password Click here\n"+ url);
+		
 		}
+
+		
 	}
 }

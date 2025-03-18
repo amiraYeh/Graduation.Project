@@ -11,7 +11,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Net.Mail;
 using System.Net;
-using Castle.Core.Smtp;
+using GP.Focusi.Services;
+
 
 namespace GP.Focusi.API.Helper
 {
@@ -25,7 +26,7 @@ namespace GP.Focusi.API.Helper
 			services.AddUserDefinedService();
 			services.AddIdentityService();
 			services.AddAuthenticationService(configurations);
-			//services.AddSmtpService();
+
 			return services;
 		}
 
@@ -82,7 +83,7 @@ namespace GP.Focusi.API.Helper
 		{
 			services.AddScoped<ITokenService, TokenService>();
 			services.AddScoped<IUserService, UserServise>();
-			services.AddTransient<IEmailService, MailService>();
+			services.AddTransient<IEmailSenderService, EmailSenderService>();
 			return services;
 		}
 
@@ -114,23 +115,11 @@ namespace GP.Focusi.API.Helper
 				};
 				//options.To
 			});
+			//services.AddAuthentication(MailKitAuthenticationOptions.);
 			return services;
 		}
+		
 
-		//private static IServiceCollection AddSmtpService(this IServiceCollection services)
-		//{
-		//	services.AddTransient<IEmailSender, MailService>();
 
-		//	var smtpClient = new SmtpClient("smtp.gmail.com")
-		//	{
-		//		Port = 587,
-		//		Credentials = new NetworkCredential("focusisystem5@gmail.com", "tuqmfqcasvoovoah"),
-		//		EnableSsl = true,
-		//	};
-		//	services.AddSingleton(smtpClient);
-		//	//services.AddSingleton<SmtpClient, SmtpClient>();
-
-		//	return services;
-		//}
 	}
 }

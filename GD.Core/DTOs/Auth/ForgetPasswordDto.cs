@@ -12,5 +12,7 @@ namespace GP.Focusi.Core.DTOs.Auth
 		[Required(ErrorMessage = "Email is Required !")]
 		[EmailAddress]
 		public string Email { get; set; }
+
+		//public string Name { get; set; }
 	}
 }

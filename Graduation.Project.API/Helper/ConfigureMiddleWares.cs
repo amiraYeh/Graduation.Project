@@ -36,6 +36,7 @@ namespace GP.Focusi.API.Helper
 
 			app.UseHttpsRedirection();
 
+			app.UseStaticFiles();
 			app.UseAuthentication();
 
 			app.UseAuthorization();

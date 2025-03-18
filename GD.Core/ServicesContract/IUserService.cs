@@ -12,6 +12,7 @@ namespace GP.Focusi.Core.ServicesContract
 	{
 		Task<UserDto> LoginAsync(LoginDto loginDto);
 		Task<UserDto> RegisterAsync(RegisterDto registerDto);
+		Task<string> ConfirmAnEmailAsync(string userId, string token);
 		Task<bool> ChechEmailExistAsync(string email);
 		Task<UserDto> LogOutAsync(string email);
 		Task<CurrentUserDto> GetCurrentUserAsync(string email);

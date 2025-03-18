@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace GP.Focusi.API.Controllers
 {
@@ -36,7 +37,7 @@ namespace GP.Focusi.API.Controllers
 		{
 			var user = await _userService.RegisterAsync(registerDto);
 			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest,"Invalid Reggisteration"));
-
+			
 			return Ok(user);
 		}
 
@@ -72,17 +73,29 @@ namespace GP.Focusi.API.Controllers
 		}
 
 		[HttpPost("forgetpassword")]
-		public async Task<ActionResult> ForgetPassword([FromBody]string email)
+		public async Task<ActionResult> ForgetPassword(ForgetPasswordDto model)
 		{
-			var user = await _userManager.FindByEmailAsync(email);
+			var user = await _userManager.FindByEmailAsync(model.Email);
 			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest,"Operation Falid!!"));
 
-			 await _userService.ForgetPasswordAsync(email);
-			//if (!IsSuccessed) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Operation Falid!!"));
+			 await _userService.ForgetPasswordAsync((model.Email).ToString());
 			
 			return Ok(new {message= "Email sended Successfuly"});
 		}
 
+		[HttpGet("confirmEmail")]
+		public async Task<ActionResult> ConfirmAnEmail(string userId, string token)
+		{
+			if (String.IsNullOrWhiteSpace(userId) || String.IsNullOrWhiteSpace(token))
+				return NotFound(new ApiErrorResponse(StatusCodes.Status404NotFound));
 
+			var result = await _userService.ConfirmAnEmailAsync(userId, token);
+
+			if (result is null)
+				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+
+			return Ok("Your Mail Confirmed Succussfly, Go To login ");
+			
+		}	
 	}
 }

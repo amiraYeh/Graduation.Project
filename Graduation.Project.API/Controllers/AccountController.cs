@@ -72,17 +72,6 @@ namespace GP.Focusi.API.Controllers
 			return Ok(user);
 		}
 
-		[HttpPost("forgetpassword")]
-		public async Task<ActionResult> ForgetPassword(ForgetPasswordDto model)
-		{
-			var user = await _userManager.FindByEmailAsync(model.Email);
-			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest,"Operation Falid!!"));
-
-			 await _userService.ForgetPasswordAsync((model.Email).ToString());
-			
-			return Ok(new {message= "Email sended Successfuly"});
-		}
-
 		[HttpGet("confirmEmail")]
 		public async Task<ActionResult> ConfirmAnEmail(string userId, string token)
 		{
@@ -95,7 +84,37 @@ namespace GP.Focusi.API.Controllers
 				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 
 			return Ok("Your Mail Confirmed Succussfly, Go To login ");
+
+		}
+
+		[HttpPost("forgetpassword")]
+		public async Task<ActionResult> ForgetPassword(ForgetPasswordDto model)
+		{
+			var user = await _userManager.FindByEmailAsync(model.Email);
+			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest,"Operation Falid!!"));
+
+			 await _userService.ForgetPasswordAsync((model.Email).ToString());
 			
-		}	
+			return Ok(new {message= "Email sended Successfuly"});
+		}
+
+		
+
+		[HttpPost("resetPassword")]
+		public  async Task<ActionResult> ResetPassword(string token, ResetPasswordDto model)
+		{
+			var user = await _userManager.FindByEmailAsync(model.Email);
+
+			if (user is null) 
+				return NotFound(new ApiErrorResponse(StatusCodes.Status404NotFound));
+
+			var result = await _userService.resetPasswordAsync(token, model);
+
+			if(result is null)
+				return BadRequest(new ApiErrorResponse(StatusCodes.Status404NotFound));
+
+			return Ok("Password has been reseted successfuly");
+
+		}
 	}
 }

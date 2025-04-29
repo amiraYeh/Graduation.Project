@@ -1,5 +1,6 @@
 
 using GP.Focusi.API.Helper;
+using GP.Focusi.Repository.Repositories;
 using Microsoft.Extensions.Configuration;
 using sib_api_v3_sdk.Client;
 
@@ -23,7 +24,8 @@ namespace Graduation.Project.API
 			//builder.Services.AddSwaggerGen();
 
 			var app = builder.Build();
-
+			//TaskManagerRepository x = new TaskManagerRepository();
+			//await x.GetByEmailTaskManagerAsync("amirayehsh@gmail.com");
 			// Configure the HTTP request pipeline.
 			await app.configureMiddleWares();
 

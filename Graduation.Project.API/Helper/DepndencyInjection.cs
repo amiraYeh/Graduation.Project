@@ -9,9 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System.Net.Mail;
-using System.Net;
 using GP.Focusi.Services;
+using StackExchange.Redis;
+using GP.Focusi.Repository.Data.Contexts;
+using GP.Focusi.API.Mapping;
+using GP.Focusi.Core.RepositoriesContract;
+using GP.Focusi.Repository.Repositories;
 
 
 namespace GP.Focusi.API.Helper
@@ -24,8 +27,10 @@ namespace GP.Focusi.API.Helper
 			services.AddSwaggerService();
 			services.AddDbContextService(configurations);
 			services.AddUserDefinedService();
+			services.AddAutoMapperService(configurations);
 			services.AddIdentityService();
 			services.AddAuthenticationService(configurations);
+			services.AddRedisService(configurations);
 
 			return services;
 		}
@@ -77,6 +82,11 @@ namespace GP.Focusi.API.Helper
 				options.UseSqlServer(configurations.GetConnectionString("IdentityConection"));
 
 			});
+			services.AddDbContext<FocusiAppDbContext>(options =>
+			{
+				options.UseSqlServer(configurations.GetConnectionString("AppConnection"));
+
+			});
 			return services;
 		}
 		private static IServiceCollection AddUserDefinedService(this IServiceCollection services)
@@ -84,14 +94,25 @@ namespace GP.Focusi.API.Helper
 			services.AddScoped<ITokenService, TokenService>();
 			services.AddScoped<IUserService, UserServise>();
 			services.AddTransient<IEmailSenderService, EmailSenderService>();
+			services.AddScoped<ICacheService, CacheService>();
+			services.AddScoped<ITaskManagerService, TaskManagerService>();
+			services.AddScoped<ITaskManagerRepository, TaskManagerRepository>();
+			
+
 			return services;
 		}
-
+		private static IServiceCollection AddAutoMapperService(this IServiceCollection services, IConfiguration configuration)
+		{
+			services.AddAutoMapper(m=>m.AddProfile(new UserChildProfile()));
+			services.AddAutoMapper(m => m.AddProfile(new TaskManagerProfile()));
+			return services;
+		}
 		private static IServiceCollection AddIdentityService(this IServiceCollection services)
 		{
-			services.AddIdentity<AppUserChild,IdentityRole>()
+			services.AddIdentity<AppUserChild, IdentityRole>()
 					.AddEntityFrameworkStores<FocusiIdentityDbContext>()
 					.AddDefaultTokenProviders();
+					//.AddGoogle();
 			return services;
 		}
 		private static IServiceCollection AddAuthenticationService(this IServiceCollection services, IConfiguration configuration)
@@ -113,13 +134,26 @@ namespace GP.Focusi.API.Helper
 					ValidateIssuerSigningKey = true,
 					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]))
 				};
-				//options.To
 			});
-			//services.AddAuthentication(MailKitAuthenticationOptions.);
 			return services;
 		}
+
+		private static IServiceCollection AddRedisService(this IServiceCollection services, IConfiguration configuration)
+		{
+
+			services.AddSingleton<IConnectionMultiplexer>(options =>
+			{
+				var connection = configuration.GetConnectionString("Redis");
+
+				return ConnectionMultiplexer.Connect(connection);
+			});
+			return services;
+		}
+
+		//private static IServiceCollection AddScalarService(this IServiceCollection services)
+		//{
 		
 
-
+		//}
 	}
 }

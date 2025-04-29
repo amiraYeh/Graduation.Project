@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GP.Focusi.Core.DTOs.Auth;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -144,7 +143,7 @@ namespace GP.Focusi.Services.Users
 				Name = user.Name,
 				Age = user.Age,
 				Gender = user.Gender,
-				DateOfCreation = user.DateOfCreation.Date,
+				DateOfCreation = user.DateOfCreation,
 				Token = await _tokenService.CreateTokenAsync(user, _userManager)
 
 			};
@@ -166,6 +165,22 @@ namespace GP.Focusi.Services.Users
 		
 		}
 
-		
+		public async Task<string> resetPasswordAsync(string token, ResetPasswordDto resetPasswordDto)
+		{
+			var user = await _userManager.FindByEmailAsync(resetPasswordDto.Email);
+
+			if (user is null) return null;
+
+			var decodedToken = WebEncoders.Base64UrlDecode(token);
+			var normalToken = Encoding.UTF8.GetString(decodedToken);
+
+			var result = await _userManager.ResetPasswordAsync(user, normalToken, resetPasswordDto.NewPassword);
+
+			if (!result.Succeeded) return null;
+
+			return result.ToString();
+
+
+		}
 	}
 }

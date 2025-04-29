@@ -19,5 +19,7 @@ namespace GP.Focusi.Core.ServicesContract
 
 		Task ForgetPasswordAsync(string email);
 
+		Task<string> resetPasswordAsync(string token, ResetPasswordDto resetPasswordDto);
+
 	}
 }

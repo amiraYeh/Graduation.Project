@@ -31,7 +31,7 @@ namespace GP.Focusi.Core.DTOs.Auth
 		public string ConfirmPassword { get; set; }
 
 		 //date = DateOnly.FromDateTime(DateTime.Now);
-		public DateTime DateOfCreation { get; } = DateTime.Now;
+		public DateTime DateOfCreation { get; } = DateTime.Now.Date;
 
 	}
 }

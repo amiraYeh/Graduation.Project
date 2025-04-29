@@ -33,6 +33,9 @@ namespace GP.Focusi.Repository.Identity.Migrations
                     b.Property<int>("Age")
                         .HasColumnType("int");
 
+                    b.Property<int>("ChildScore")
+                        .HasColumnType("int");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");

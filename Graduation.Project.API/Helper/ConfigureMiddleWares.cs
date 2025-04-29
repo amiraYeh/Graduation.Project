@@ -4,6 +4,7 @@ using Graduation.Project.API;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using GP.Focusi.Repository.Identity;
+using GP.Focusi.Repository.Data.Contexts;
 
 namespace GP.Focusi.API.Helper
 {
@@ -14,11 +15,16 @@ namespace GP.Focusi.API.Helper
 
 			using var scope = app.Services.CreateScope();
 			var services = scope.ServiceProvider;
+
+			var context = services.GetRequiredService<FocusiAppDbContext>();
+
 			var identityContext = services.GetRequiredService<FocusiIdentityDbContext>();
 			var userManager = services.GetRequiredService<UserManager<AppUserChild>>();
 			var loggerFactory = services.GetRequiredService<ILoggerFactory>();
 			try
 			{
+				await context.Database.MigrateAsync();// should Add migration first
+
 			    await identityContext.Database.MigrateAsync();
 				await FocusiIdentityDbContextSeed.SeedUserAsync(userManager);
 			}
@@ -27,9 +33,10 @@ namespace GP.Focusi.API.Helper
 				var logger = loggerFactory.CreateLogger<Program>();
 				logger.LogError(ex, "Ther is a problem during apply Migrations");
 			}
-
+			
 			if (app.Environment.IsDevelopment())
 			{
+			
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}

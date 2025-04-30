@@ -37,7 +37,7 @@ namespace GP.Focusi.Repository.Repositories
 				{
 					foreach (var item in TManager)
 					{
-						tasks.Add(new { Name = item.Name, Date = item.date.ToShortTimeString(), Done = item.IsCompleted });
+						tasks.Add(new { Name = item.Name, Time = item.date.ToShortTimeString(), Done = item.IsCompleted });
 					}
 				}
 			}

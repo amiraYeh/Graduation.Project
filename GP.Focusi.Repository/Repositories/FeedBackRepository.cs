@@ -1,7 +1,9 @@
 ﻿using GP.Focusi.Core.DTOs;
 using GP.Focusi.Core.Entites;
+using GP.Focusi.Core.Entites.Identity;
 using GP.Focusi.Core.RepositoriesContract;
 using GP.Focusi.Repository.Data.Contexts;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +15,19 @@ namespace GP.Focusi.Repository.Repositories
 	public class FeedBackRepository : IFeedBackRepository
 	{
 		private readonly FocusiAppDbContext _context;
+		private readonly UserManager<AppUserChild> _userManager;
 
-		public FeedBackRepository(FocusiAppDbContext context)
+		public FeedBackRepository(FocusiAppDbContext context, UserManager<AppUserChild> userManager)
 		{
 			_context = context;
+			_userManager = userManager;
 		}
 		public async Task<int> AddFeedBackAsync(string ChildEmail, FeedBackDto FeedBackDto)
 		{
 			if (ChildEmail is null || FeedBackDto is null) return 0;
+
+			var child = await _userManager.FindByEmailAsync(ChildEmail);
+			if(child is null) return 0;
 
 			var feedback = MapFeedback(FeedBackDto);
 			feedback.ChildEmail = ChildEmail;

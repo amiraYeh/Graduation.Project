@@ -98,6 +98,8 @@ namespace GP.Focusi.API.Helper
 			services.AddScoped<ITaskManagerService, TaskManagerService>();
 			services.AddScoped<ITaskManagerRepository, TaskManagerRepository>();
 			services.AddScoped<IFeedBackRepository, FeedBackRepository>();
+			services.AddScoped<IParentTestService, ParentTestService>();
+			services.AddScoped<IParentTestRepository, ParentTestRepository>();
 			
 
 			return services;

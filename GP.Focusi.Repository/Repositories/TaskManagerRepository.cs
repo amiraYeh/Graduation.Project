@@ -18,9 +18,12 @@ namespace GP.Focusi.Repository.Repositories
 	public class TaskManagerRepository : ITaskManagerRepository
 	{
 		private readonly FocusiAppDbContext _context;
-		public TaskManagerRepository(FocusiAppDbContext context)
+		private readonly UserManager<AppUserChild> _userManager;
+
+		public TaskManagerRepository(FocusiAppDbContext context, UserManager<AppUserChild> userManager)
 		{
 			_context = context;
+			_userManager = userManager;
 		}
 
 		public async Task<List<object>> GetAllTasksAsync(string email)
@@ -93,7 +96,7 @@ namespace GP.Focusi.Repository.Repositories
 		}
 
 
-		private void CalcTaskScore(string userEmail)
+		private async void CalcTaskScore(string userEmail)
 		{
 			if (userEmail is null)
 				return;
@@ -101,12 +104,13 @@ namespace GP.Focusi.Repository.Repositories
 			var taskList = _context.TaskManagers.FirstOrDefault(T => T.ChildMail == userEmail);
 			var task = _context.TaskManagerItems.FirstOrDefault(T=>T.ChildEmail == userEmail);
 
-			if (taskList is null || task is null)
+			if (taskList is null || task is null )
 				return;
 
 			if (task.IsCompleted)
+			{
 				taskList.TaskManagerScore += 2;
-
+			}
 			_context.SaveChanges();
 		}
 

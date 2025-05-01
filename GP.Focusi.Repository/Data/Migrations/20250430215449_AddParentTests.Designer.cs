@@ -4,6 +4,7 @@ using GP.Focusi.Repository.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GP.Focusi.Repository.Data.Migrations
 {
     [DbContext(typeof(FocusiAppDbContext))]
-    partial class FocusiAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250430215449_AddParentTests")]
+    partial class AddParentTests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,9 +84,6 @@ namespace GP.Focusi.Repository.Data.Migrations
                     b.Property<string>("ChildEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("DateOfSubmited")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("DistractionRatio")
                         .HasColumnType("int");

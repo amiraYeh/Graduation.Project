@@ -18,6 +18,9 @@ namespace GP.Focusi.Core.Entites
         public string ChildMail { get; set; }
         public int TaskManagerScore { get; set; } = 0; 
         public List<TaskManagerItems> Items { get; set; }
+		public DateTimeOffset DateOfCreation { get; set; } = DateTimeOffset.UtcNow;
 
-    }
+		public int ItemsCount { get; set; } = 0;
+
+	}
 }

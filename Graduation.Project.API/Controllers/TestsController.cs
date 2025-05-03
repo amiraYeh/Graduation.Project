@@ -24,7 +24,7 @@ namespace GP.Focusi.API.Controllers
 
 			if (res is < 1) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 
-			return Ok("Yor Answer Saved Successfully");
+			return Ok("Your Answer Saved Successfully");
 
 		}
 	}

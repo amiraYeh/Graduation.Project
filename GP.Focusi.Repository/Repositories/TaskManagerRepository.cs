@@ -69,7 +69,6 @@ namespace GP.Focusi.Repository.Repositories
 					taskManager.Items = x;
 
 				_context.TaskManagers.Update(taskManager);
-				
 			}
 			else
 			{
@@ -79,8 +78,6 @@ namespace GP.Focusi.Repository.Repositories
 				x.Add(taskItem);
 				newList.Items = x;
 				await _context.TaskManagers.AddAsync(newList);
-			
-
 			}
 
 			await _context.TaskManagerItems.AddAsync(taskItem);
@@ -93,16 +90,14 @@ namespace GP.Focusi.Repository.Repositories
 
 			if (task is null) return 0;
 
-			var taskMan = await _context.TaskManagers.FirstOrDefaultAsync(M=>M.ChildMail == task.ChildEmail);
-
 			CalcTaskScore(task.ChildEmail);
-			
+
 			_context.Remove(task);
 			return await _context.SaveChangesAsync();
 		}
 
 
-		private void CalcTaskScore(string userEmail)
+		private async void CalcTaskScore(string userEmail)
 		{
 			if (userEmail is null)
 				return;
@@ -110,12 +105,13 @@ namespace GP.Focusi.Repository.Repositories
 			var taskList = _context.TaskManagers.FirstOrDefault(T => T.ChildMail == userEmail);
 			var task = _context.TaskManagerItems.FirstOrDefault(T=>T.ChildEmail == userEmail);
 
-			if (taskList is null || task is null)
+			if (taskList is null || task is null )
 				return;
 
 			if (task.IsCompleted)
+			{
 				taskList.TaskManagerScore += 2;
-
+			}
 			_context.SaveChanges();
 		}
 

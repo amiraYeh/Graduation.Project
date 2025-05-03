@@ -4,6 +4,7 @@ using GP.Focusi.Repository.Data.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GP.Focusi.Repository.Data.Migrations
 {
     [DbContext(typeof(FocusiAppDbContext))]
-    partial class FocusiAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250430195534_AddFeedBack")]
+    partial class AddFeedBack
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,9 +36,6 @@ namespace GP.Focusi.Repository.Data.Migrations
                     b.Property<string>("ChildEmail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("DateOfCreation")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<int>("Q1ProgramHelpParent")
                         .HasColumnType("int");
@@ -70,29 +70,6 @@ namespace GP.Focusi.Repository.Data.Migrations
                     b.ToTable("FeedBacks");
                 });
 
-            modelBuilder.Entity("GP.Focusi.Core.Entites.ParentTest", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("ChildEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("DateOfSubmited")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("DistractionRatio")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("ParentTests");
-                });
-
             modelBuilder.Entity("GP.Focusi.Core.Entites.TaskManager", b =>
                 {
                     b.Property<string>("ID")
@@ -101,12 +78,6 @@ namespace GP.Focusi.Repository.Data.Migrations
                     b.Property<string>("ChildMail")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTimeOffset>("DateOfCreation")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("ItemsCount")
-                        .HasColumnType("int");
 
                     b.Property<int>("TaskManagerScore")
                         .HasColumnType("int");

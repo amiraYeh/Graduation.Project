@@ -20,5 +20,8 @@ namespace GP.Focusi.Core.Entites
         public List<TaskManagerItems> Items { get; set; }
 
 
+
+
+
     }
 }

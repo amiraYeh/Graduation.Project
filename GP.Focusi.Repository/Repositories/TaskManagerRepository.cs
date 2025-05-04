@@ -69,6 +69,7 @@ namespace GP.Focusi.Repository.Repositories
 					taskManager.Items = x;
 
 				_context.TaskManagers.Update(taskManager);
+
 			}
 			else
 			{
@@ -78,6 +79,7 @@ namespace GP.Focusi.Repository.Repositories
 				x.Add(taskItem);
 				newList.Items = x;
 				await _context.TaskManagers.AddAsync(newList);
+
 			}
 
 			await _context.TaskManagerItems.AddAsync(taskItem);
@@ -90,8 +92,10 @@ namespace GP.Focusi.Repository.Repositories
 
 			if (task is null) return 0;
 
-			CalcTaskScore(task.ChildEmail);
 
+
+			CalcTaskScore(task.ChildEmail);
+			
 			_context.Remove(task);
 			return await _context.SaveChangesAsync();
 		}

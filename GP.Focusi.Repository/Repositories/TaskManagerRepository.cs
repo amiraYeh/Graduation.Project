@@ -32,7 +32,7 @@ namespace GP.Focusi.Repository.Repositories
 
 			if (taskManager is null) return null;
 
-			var result = _context.TaskManagerItems.GroupBy(T => T.ChildEmail);
+			var result = _context.TaskManagerItems.OrderBy(T => T.ID).GroupBy(T => T.ChildEmail);
 			List<object> tasks = new List<object>();
 			foreach (var TManager in result)
 			{
@@ -69,7 +69,9 @@ namespace GP.Focusi.Repository.Repositories
 					taskManager.Items = x;
 
 				_context.TaskManagers.Update(taskManager);
+				var count = taskManager.ItemsCount;
 
+				taskManager.ItemsCount = count + 1;
 			}
 			else
 			{
@@ -79,7 +81,7 @@ namespace GP.Focusi.Repository.Repositories
 				x.Add(taskItem);
 				newList.Items = x;
 				await _context.TaskManagers.AddAsync(newList);
-
+				newList.ItemsCount = 1;
 			}
 
 			await _context.TaskManagerItems.AddAsync(taskItem);
@@ -92,10 +94,23 @@ namespace GP.Focusi.Repository.Repositories
 
 			if (task is null) return 0;
 
-
+			var taskManager = await _context.TaskManagers.FirstOrDefaultAsync(T=>T.ChildMail == task.ChildEmail);
 
 			CalcTaskScore(task.ChildEmail);
-			
+
+			taskManager.ItemsCount--;
+
+			if (taskManager.ItemsCount == 0)
+			{
+				var child = await _userManager.FindByEmailAsync(task.ChildEmail);
+
+				if(child is null) return 0;
+
+				child.ChildScore += taskManager.TaskManagerScore;
+				taskManager.TaskManagerScore = 0;
+
+				await _userManager.UpdateAsync(child);
+			}
 			_context.Remove(task);
 			return await _context.SaveChangesAsync();
 		}
@@ -112,7 +127,7 @@ namespace GP.Focusi.Repository.Repositories
 			if (taskList is null || task is null )
 				return;
 
-			if (task.IsCompleted)
+			if (task.IsCompleted && task.IsDateAndTimeEnded == false)
 			{
 				taskList.TaskManagerScore += 2;
 			}

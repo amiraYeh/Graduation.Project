@@ -19,7 +19,8 @@ namespace GP.Focusi.Core.Entites
         public int TaskManagerScore { get; set; } = 0; 
         public List<TaskManagerItems> Items { get; set; }
 
-
+		public int ItemsCount { get; set; } = 0;
+		public DateTimeOffset CreationDate { get; set; } = DateTimeOffset.UtcNow;
 
 
 

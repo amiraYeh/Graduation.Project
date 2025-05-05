@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GP.Focusi.API.Controllers
 {
 	
-	//[Authorize]
+	[Authorize]
 	public class DailyRoutineController : BaseAppController
 	{
 		private readonly ITaskManagerService _taskManagerService;

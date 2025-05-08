@@ -17,7 +17,7 @@ namespace GP.Focusi.Core.ServicesContract
 		Task<UserDto> LogOutAsync(string email);
 		Task<CurrentUserDto> GetCurrentUserAsync(string email);
 
-		Task ForgetPasswordAsync(string email);
+		Task<string> ForgetPasswordAsync(string email);
 
 		Task<string> resetPasswordAsync(string token, ResetPasswordDto resetPasswordDto);
 

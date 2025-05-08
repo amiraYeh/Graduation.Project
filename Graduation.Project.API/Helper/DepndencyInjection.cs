@@ -31,7 +31,7 @@ namespace GP.Focusi.API.Helper
 			services.AddIdentityService();
 			services.AddAuthenticationService(configurations);
 			services.AddRedisService(configurations);
-
+			services.AddCorsService();
 			return services;
 		}
 
@@ -152,10 +152,20 @@ namespace GP.Focusi.API.Helper
 			});
 			return services;
 		}
-
+		private static IServiceCollection AddCorsService(this IServiceCollection services)
+		{
+			services.AddCors(options =>
+			{
+				options.AddPolicy("CorsPolicy", policy =>
+				{
+					policy.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+				});
+			});
+			return services;
+		}
 		//private static IServiceCollection AddScalarService(this IServiceCollection services)
 		//{
-		
+
 
 		//}
 	}

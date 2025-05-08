@@ -36,7 +36,7 @@ namespace GP.Focusi.API.Controllers
 		public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
 		{
 			var user = await _userService.RegisterAsync(registerDto);
-			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest,"Invalid Reggisteration"));
+			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest,"Invalid Registeration"));
 			
 			return Ok(user);
 		}
@@ -93,9 +93,10 @@ namespace GP.Focusi.API.Controllers
 			var user = await _userManager.FindByEmailAsync(model.Email);
 			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest,"Operation Falid!!"));
 
-			 await _userService.ForgetPasswordAsync((model.Email).ToString());
-			
-			return Ok(new {message= "Email sended Successfuly"});
+			var res = await _userService.ForgetPasswordAsync((model.Email).ToString());
+			if (res is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Operation Falid!!"));
+
+			return Ok(new {message= "Reset pasword email sended Successfuly"});
 		}
 
 		

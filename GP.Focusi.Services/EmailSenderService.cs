@@ -24,7 +24,7 @@ namespace GP.Focusi.Services
 			_configuration = configuration;
 		}
 
-        public void SendAnEmail(string receiverEmail, string subject, string message)
+        public string SendAnEmail(string receiverEmail, string subject, string message)
 		{
 			string? senderEmail =_configuration["BrevoEmailsApi:SenderEmail"];
 			
@@ -45,14 +45,18 @@ namespace GP.Focusi.Services
 			{
 				var sendSmtpEmail = new SendSmtpEmail(sender, To, null, null, HtmlContent, TextContent, subject);
 				CreateSmtpEmail result = apiInstance.SendTransacEmail(sendSmtpEmail);
+				return result.ToString();
 				Console.WriteLine(result.ToJson());
-				Console.ReadLine();
+				
+				
+
 			}
 			catch (Exception e)
 			{
 				Console.WriteLine(e.Message);
 				Console.ReadLine();
 			}
+			return null;
 
 		}
 	}

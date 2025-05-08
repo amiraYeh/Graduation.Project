@@ -26,7 +26,7 @@ namespace GP.Focusi.API.Helper
 				await context.Database.MigrateAsync();// should Add migration first
 
 			    await identityContext.Database.MigrateAsync();
-				await FocusiIdentityDbContextSeed.SeedUserAsync(userManager);
+				//await FocusiIdentityDbContextSeed.SeedUserAsync(userManager);
 			}
 			catch (Exception ex)
 			{
@@ -40,10 +40,21 @@ namespace GP.Focusi.API.Helper
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
+			if (app.Environment.IsProduction())
+			{
+
+				app.UseSwagger();
+				app.UseSwaggerUI(c =>
+				{
+					c.SwaggerEndpoint("/swagger/v1/swagger.json", "Focusi API V1");
+					c.RoutePrefix = "api-docs"; // This makes docs available at /api-docs
+				});
+			}
 
 			app.UseHttpsRedirection();
 
 			app.UseStaticFiles();
+			app.UseCors("CorsPolicy");
 			app.UseAuthentication();
 
 			app.UseAuthorization();

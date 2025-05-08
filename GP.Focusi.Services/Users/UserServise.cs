@@ -81,8 +81,8 @@ namespace GP.Focusi.Services.Users
 
 			string url = $"{_configuration["BaseURL"]}/api/Account/confirmEmail?userId={user.Id}&token={validConfirmToken}";
 
-			_emailService.SendAnEmail(user.Email, "Confirmation Focusi Account Email","To Confirme Your Email click here\n"+ url);
-		
+			var sended =_emailService.SendAnEmail(user.Email, "Confirmation Focusi Account Email","To Confirme Your Email click here\n"+ url);
+			if (sended is null) return null;
 			return new UserDto()
 			{
 				Name = user.Name,
@@ -150,10 +150,10 @@ namespace GP.Focusi.Services.Users
 
 		}
 
-		public async Task ForgetPasswordAsync(string email)
+		public async Task<string> ForgetPasswordAsync(string email)
 		{
 			var user = await _userManager.FindByEmailAsync(email);
-			if (user is null) return;
+			if (user is null) return null;
 
 			var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 			var encodedTolen = Encoding.UTF8.GetBytes(token);
@@ -161,8 +161,10 @@ namespace GP.Focusi.Services.Users
 
 			string url = $"{_configuration["BaseURL"]}/api/Account/resetPassword?email={email}&token={validToken}";
 
-			 _emailService.SendAnEmail(email, "Reset Password Email", "To Reset Your Password Click here\n"+ url);
-		
+			var sended = _emailService.SendAnEmail(email, "Reset Password Email", "To Reset Your Password Click here\n"+ url);
+			if (sended is null) return null;
+			
+			return "Done";
 		}
 
 		public async Task<string> resetPasswordAsync(string token, ResetPasswordDto resetPasswordDto)

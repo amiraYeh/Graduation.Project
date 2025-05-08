@@ -13,6 +13,7 @@
   <ItemGroup>
     <Folder Include="Data\DataSeed\" />
     <Folder Include="Data\Configurations\" />
+    <Folder Include="Identity\Migrations\" />
   </ItemGroup>
 
   <ItemGroup>

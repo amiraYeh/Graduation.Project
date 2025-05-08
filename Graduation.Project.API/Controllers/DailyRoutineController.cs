@@ -54,6 +54,7 @@ namespace GP.Focusi.API.Controllers
 
 			if (itemDto.IsCompleted)
 			{
+				await _taskManagerService.UpdateTask(UserEmail, itemDto);
 				await _taskManagerService.DeletTask(itemDto.Name);
 				return Ok("You Have Finshed this Task Keep going :)");
 			}

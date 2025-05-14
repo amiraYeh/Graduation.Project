@@ -44,8 +44,12 @@ namespace GP.Focusi.Services.Users
 			var user = await _userManager.FindByEmailAsync(loginDto.Email);
 			if (user is null) return null;
 		
-			var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password,false);
-			if (!result.Succeeded && await _userManager.IsEmailConfirmedAsync(user) is false) 
+			var resultPass = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password,false);
+			if (!resultPass.Succeeded ) 
+				return null;
+
+			var resultConfirm = await _userManager.IsEmailConfirmedAsync(user);
+			if (!resultConfirm)
 				return null;
 
 			return new UserDto()

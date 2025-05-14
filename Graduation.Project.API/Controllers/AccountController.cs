@@ -27,7 +27,7 @@ namespace GP.Focusi.API.Controllers
 		 public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
 		{
 			var user = await _userService.LoginAsync(loginDto);
-			if (user is null) return Unauthorized(new ApiErrorResponse(StatusCodes.Status401Unauthorized));
+			if (user is null) return Unauthorized(new ApiErrorResponse(StatusCodes.Status401Unauthorized,"Login Faild"));
 
 			return Ok(user);
 		}

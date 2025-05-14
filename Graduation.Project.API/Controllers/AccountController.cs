@@ -93,10 +93,10 @@ namespace GP.Focusi.API.Controllers
 			var user = await _userManager.FindByEmailAsync(model.Email);
 			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest,"Operation Falid!!"));
 
-			var res = await _userService.ForgetPasswordAsync((model.Email).ToString());
+			var res = await _userService.ForgetPasswordAsync(model.Email);
 			if (res is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Operation Falid!!"));
 
-			return Ok(new {message= "Reset pasword email sended Successfuly"});
+			return Ok(new {token= res});
 		}
 
 		

@@ -159,12 +159,12 @@ namespace GP.Focusi.Services.Users
 			var encodedTolen = Encoding.UTF8.GetBytes(token);
 			var validToken = WebEncoders.Base64UrlEncode(encodedTolen);
 
-			string url = $"{_configuration["BaseURL"]}/api/Account/resetPassword?email={email}&token={validToken}";
+			//string url = $"{_configuration["BaseURL"]}/api/Account/resetPassword?email={email}&token={validToken}";
 
-			var sended = _emailService.SendAnEmail(email, "Reset Password Email", "To Reset Your Password Click here\n"+ url);
-			if (sended is null) return null;
+			//var sended = _emailService.SendAnEmail(email, "Reset Password Email", "To Reset Your Password Click here\n"+ url);
+			//if (sended is null) return null;
 			
-			return "Done";
+			return validToken;
 		}
 
 		public async Task<string> resetPasswordAsync(string token, ResetPasswordDto resetPasswordDto)

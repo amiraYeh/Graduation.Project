@@ -102,8 +102,9 @@ namespace GP.Focusi.API.Controllers
 		
 
 		[HttpPost("resetPassword")]
-		public  async Task<ActionResult> ResetPassword(string token, ResetPasswordDto model)
+		public  async Task<ActionResult> ResetPassword([FromHeader] string token, ResetPasswordDto model)
 		{
+
 			var user = await _userManager.FindByEmailAsync(model.Email);
 
 			if (user is null) 

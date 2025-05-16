@@ -7,12 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\DataSeed\**" />
+    <EmbeddedResource Remove="Data\DataSeed\**" />
+    <None Remove="Data\DataSeed\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GD.Core\GP.Focusi.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Data\DataSeed\" />
-    <Folder Include="Data\Configurations\" />
+    <Folder Include="Data\DataSeeds\" />
     <Folder Include="Identity\Migrations\" />
   </ItemGroup>
 

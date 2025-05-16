@@ -15,6 +15,7 @@ using GP.Focusi.Repository.Data.Contexts;
 using GP.Focusi.API.Mapping;
 using GP.Focusi.Core.RepositoriesContract;
 using GP.Focusi.Repository.Repositories;
+using GP.Focusi.Core.Entites;
 
 
 namespace GP.Focusi.API.Helper
@@ -100,7 +101,11 @@ namespace GP.Focusi.API.Helper
 			services.AddScoped<IFeedBackRepository, FeedBackRepository>();
 			services.AddScoped<IParentTestService, ParentTestService>();
 			services.AddScoped<IParentTestRepository, ParentTestRepository>();
-			
+			//services.AddScoped<IStoryAndAdviceServices, StoryAndAdviceServices>();
+			services.AddScoped<IStoryAndAdviceRepository<Advice>,StoryAndAdviceRepository<Advice>>();
+			services.AddScoped<IStoryAndAdviceRepository<Story>, StoryAndAdviceRepository<Story>>();
+
+
 
 			return services;
 		}

@@ -13,11 +13,10 @@ namespace GP.Focusi.Core.Entites.Identity
 
 		public int Age { get; set; }
 		public string Gender { get; set; }
-		public DateTime DateOfCreation { set; get; } //= DateOnly.FromDateTime(DateTime.Now);
+		public DateTime DateOfCreation { set; get; }    //= DateOnly.FromDateTime(DateTime.Now);
 		public int ChildScore { get; set; } = 0;
 
-        //public int? ChildClassId { get; set; }
-        //public ChildClass ChildClass { get; set; }
+        public string? ChildClass { get; set; }
 
     }
 }

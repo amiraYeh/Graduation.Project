@@ -8,6 +8,7 @@ using GP.Focusi.Core.ServicesContract;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GP.Focusi.API.Controllers
 {
@@ -23,8 +24,10 @@ namespace GP.Focusi.API.Controllers
 		}
 		
 		[HttpGet("taskManager")]
-		public async Task<ActionResult<object>> GetTaskManager(string UserEmail)
+		public async Task<ActionResult<object>> GetTaskManager()
 		{
+			var UserEmail = User.FindFirstValue(ClaimTypes.Email);
+
 			if (UserEmail is null)
 				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 
@@ -36,10 +39,11 @@ namespace GP.Focusi.API.Controllers
 			return Ok(Result);
 		}
 
-		[HttpPost("addtask{UserEmail}")]
-		public async Task<ActionResult<TaskManagerItemsDto>>AddTask(string UserEmail,TaskManagerItemsDto itemDto)
+		[HttpPost("addtask")]
+		public async Task<ActionResult<TaskManagerItemsDto>>AddTask(TaskManagerItemsDto itemDto)
 		{
-			
+			var UserEmail = User.FindFirstValue(ClaimTypes.Email);
+
 			var item = await _taskManagerService.CreateTask(UserEmail, itemDto);
 
 			if (item is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Invalid Operation!!"));
@@ -47,9 +51,11 @@ namespace GP.Focusi.API.Controllers
 			return Ok(item);
 		}
 
-		[HttpPut("updatetask{UserEmail}")]
-		public async Task<ActionResult<TaskManagerItemsDto>> EditeTask(string UserEmail, TaskManagerItemsDto itemDto)
+		[HttpPut("updatetask")]
+		public async Task<ActionResult<TaskManagerItemsDto>> EditeTask(TaskManagerItemsDto itemDto)
 		{
+			var UserEmail = User.FindFirstValue(ClaimTypes.Email);
+
 			if (itemDto is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 
 			if (itemDto.IsCompleted)
@@ -66,7 +72,7 @@ namespace GP.Focusi.API.Controllers
 		}
 
         [HttpDelete("delete")]
-		 public async Task <IActionResult>  DeleteTask(string name)
+		 public async Task <IActionResult> DeleteTask(string name)
 		{
 			 var res = await _taskManagerService.DeletTask(name);
 

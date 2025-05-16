@@ -3,6 +3,7 @@ using GP.Focusi.Core.ServicesContract;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace GP.Focusi.API.Controllers
 {
@@ -15,9 +16,11 @@ namespace GP.Focusi.API.Controllers
 		{
 			_parentTestService = parentTestService;
 		}
-		[HttpPut("ParentsTest{childEmail}")]
-		public async Task<IActionResult> ParentsTest(string childEmail, List<int> testAnswer)
+		[HttpPut("ParentsTest")]
+		public async Task<IActionResult> ParentsTest(List<int> testAnswer)
 		{
+			var childEmail = User.FindFirstValue(ClaimTypes.Email);
+
 			if (testAnswer.Count < 0 || childEmail is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 			
 			var res = await _parentTestService.GetDistractionRatioAsync(childEmail, testAnswer);

@@ -17,6 +17,7 @@ namespace GP.Focusi.Core.Entites.Identity
 		public int ChildScore { get; set; } = 0;
 
         public string? ChildClass { get; set; }
+		public string? PictureUrl { get; set; } = null;
 
     }
 }

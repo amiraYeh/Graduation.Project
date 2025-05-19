@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -116,6 +117,34 @@ namespace GP.Focusi.API.Controllers
 				return BadRequest(new ApiErrorResponse(StatusCodes.Status404NotFound));
 
 			return Ok("Password has been reseted successfuly");
+
+		}
+		[Authorize]
+		[HttpPut("addProfilePicture")]
+		public async Task<IActionResult> AddProPicture([FromForm]ChPictureDto model)
+		{
+			var userEmail = User.FindFirstValue(ClaimTypes.Email);
+			if (userEmail is null)
+				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+
+			var userName = User.FindFirstValue(ClaimTypes.Name);
+
+			string pictureName = $"{userName}" + "_" + $"{model.Picture.FileName}";
+			string path = $@"..\Graduation.Project.API\ProfilePictures\{pictureName.Normalize()}";
+
+			//pictureName.
+
+			using (var stream = new FileStream(Path.Combine(path), FileMode.Create, FileAccess.Write))
+			{
+				var res = await _userService.ProfilePicture(stream.Name, userEmail);
+				if (res < 1)
+					return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+
+				model.Picture.CopyTo(stream);
+			}
+			
+
+			return Ok("Your Picture Saved Successfully");
 
 		}
 	}

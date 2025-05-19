@@ -17,7 +17,7 @@ namespace GP.Focusi.API.Controllers
 			_parentTestService = parentTestService;
 		}
 		[HttpPut("ParentsTest")]
-		public async Task<IActionResult> ParentsTest(List<int> testAnswer)
+		public async Task<IActionResult> ParentsTest([FromBody]List<int> testAnswer)
 		{
 			var childEmail = User.FindFirstValue(ClaimTypes.Email);
 

@@ -16,7 +16,7 @@ namespace GP.Focusi.Core.ServicesContract
 		Task<bool> ChechEmailExistAsync(string email);
 		Task<UserDto> LogOutAsync(string email);
 		Task<CurrentUserDto> GetCurrentUserAsync(string email);
-
+		Task<int> ProfilePicture(string pictureUrl, string email);
 		Task<string> ForgetPasswordAsync(string email);
 
 		Task<string> resetPasswordAsync(string token, ResetPasswordDto resetPasswordDto);

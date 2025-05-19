@@ -142,14 +142,18 @@ namespace GP.Focusi.Services.Users
 
 			if (user is null) return null;
 
-			return new CurrentUserDto()
+			string fullPath = "";
+			using (var stream = new FileStream(Path.Combine(@"..\Graduation.Project.API\ProfilePictures\DefaultUser.JPG"), FileMode.Open, FileAccess.Read))
+			{
+				fullPath = stream.Name;
+			}
+				return new CurrentUserDto()
 			{
 				Name = user.Name,
 				Age = user.Age,
 				Gender = user.Gender,
 				DateOfCreation = user.DateOfCreation,
-				Token = await _tokenService.CreateTokenAsync(user, _userManager)
-
+				PictureUrl = user.PictureUrl != null ? user.PictureUrl :fullPath 
 			};
 
 		}
@@ -186,6 +190,20 @@ namespace GP.Focusi.Services.Users
 
 			return result.ToString();
 
+
+		}
+
+		public async Task<int> ProfilePicture(string pictureUrl, string email)
+		{
+			var child = await _userManager.FindByEmailAsync(email);
+			if (child is null) return 0;
+
+			child.PictureUrl = pictureUrl;
+			var res = await _userManager.UpdateAsync(child);
+
+			if (!res.Succeeded) return 0;
+			
+			return 1;
 
 		}
 	}

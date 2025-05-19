@@ -140,20 +140,15 @@ namespace GP.Focusi.Services.Users
 
 			var user = await _userManager.FindByEmailAsync(email);
 
-			if (user is null) return null;
-
-			string fullPath = "";
-			using (var stream = new FileStream(Path.Combine(@"..\Graduation.Project.API\ProfilePictures\DefaultUser.JPG"), FileMode.Open, FileAccess.Read))
-			{
-				fullPath = stream.Name;
-			}
+			if (user is null) return null;		
+			
 				return new CurrentUserDto()
 			{
 				Name = user.Name,
 				Age = user.Age,
 				Gender = user.Gender,
 				DateOfCreation = user.DateOfCreation,
-				PictureUrl = user.PictureUrl != null ? user.PictureUrl :fullPath 
+				PictureUrl = user.PictureUrl 
 			};
 
 		}

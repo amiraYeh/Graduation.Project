@@ -69,6 +69,11 @@ namespace GP.Focusi.API.Controllers
 			var user = await _userService.GetCurrentUserAsync(userEmail);
 			
 			if (user is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+			
+			if(user.PictureUrl is null)
+			{
+				user.PictureUrl = $"{Request.Scheme}://{Request.Host}/ProfilePictures/DefaultUser.JPG";
+			}
 		
 			return Ok(user);
 		}
@@ -130,19 +135,19 @@ namespace GP.Focusi.API.Controllers
 			var userName = User.FindFirstValue(ClaimTypes.Name);
 
 			string pictureName = $"{userName}" + "_" + $"{model.Picture.FileName}";
-			string path = $@"..\Graduation.Project.API\ProfilePictures\{pictureName.Normalize()}";
+			string pathDB = $"{Request.Scheme}://{Request.Host}/ProfilePictures/{pictureName}";
+			string path = $@".\wwwroot\ProfilePictures\{pictureName.Normalize()}";
 
-			//pictureName.
 
+			//var x = $"{Request.Scheme}://{Request.Host}/ProfilePictures/{pictureName}";
 			using (var stream = new FileStream(Path.Combine(path), FileMode.Create, FileAccess.Write))
 			{
-				var res = await _userService.ProfilePicture(stream.Name, userEmail);
+				var res = await _userService.ProfilePicture(pathDB, userEmail);
 				if (res < 1)
 					return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 
 				model.Picture.CopyTo(stream);
 			}
-			
 
 			return Ok("Your Picture Saved Successfully");
 

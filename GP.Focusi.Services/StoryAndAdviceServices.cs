@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GP.Focusi.Services
 {
-	class StoryAndAdviceServices : IStoryAndAdviceServices
+	public class StoryAndAdviceServices : IStoryAndAdviceServices
 	{
 		private readonly UserManager<AppUserChild> _userManager;
 		private readonly IStoryAndAdviceRepository<Advice> _adviceRepository;

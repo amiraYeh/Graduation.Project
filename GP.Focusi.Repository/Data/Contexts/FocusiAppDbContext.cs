@@ -25,7 +25,6 @@ namespace GP.Focusi.Repository.Data.Contexts
 		public DbSet<TaskManager> TaskManagers { get; set; }
 		public DbSet<FeedBack> FeedBacks { get; set; }
 		public DbSet<ParentTest> ParentTests { get; set; }
-		public DbSet<ChildClass> Classes { get; set; }
 		public DbSet<Story> Stories { get; set; }
 		public DbSet<Advice> Advices { get; set; }
 

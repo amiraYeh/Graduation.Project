@@ -9,6 +9,6 @@ namespace GP.Focusi.Core.RepositoriesContract
 {
 	public interface IStoryAndAdviceRepository<TEntity> where TEntity : BaseEntity<int>
 	{
-		Task<IEnumerable<object>> GetAllAsync(string classType);
+		Task<List<string>> GetAllAsync(string classType);
 	}
 }

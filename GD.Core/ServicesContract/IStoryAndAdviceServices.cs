@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GP.Focusi.Core.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace GP.Focusi.Core.ServicesContract
 {
 	public interface IStoryAndAdviceServices
 	{
-		Task<IEnumerable<object>> AllAdvices(string email);
-		Task<IEnumerable<object>> AllStories(string email);
+		Task<List<string>> AllAdvices(string email);
+		Task<List<string>> AllStories(string email);
 
 	}
 }

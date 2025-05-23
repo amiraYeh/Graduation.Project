@@ -41,7 +41,8 @@ namespace GP.Focusi.API.Controllers
 			var res = await _storyAndAdviceServices.AllStories(childEmail);
 			if (res is null)
 				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
-
+			List<string> x = res as List<string>;
+			Console.WriteLine(x[0]);
 			return Ok(res);
 		}
 
@@ -55,7 +56,21 @@ namespace GP.Focusi.API.Controllers
 			if(res is null)
 				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 
-			return Ok("You Answer Saved Successfully");
+			return Ok("You Answer Saved Successfully and Your score is updated");
 		}
+
+		[HttpPut("Game")]
+		public async Task<IActionResult> addGameScore([FromBody]int gameDuration)
+		{
+            var childEmail = User.FindFirstValue(ClaimTypes.Email);
+			var res = await _classServices.gameDuragion(gameDuration, childEmail);
+
+            if (res is null)
+                return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+
+            return Ok("Your Score is updated");
+
+        }
+
 	}
 }

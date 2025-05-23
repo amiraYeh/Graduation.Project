@@ -28,13 +28,24 @@ namespace GP.Focusi.Repository.Repositories
 
 			if (res == 0)
 				return null;
+
 			return res;
 		}
 
-		public Task<int?> gameDuragion(double duration, string childEmail)
+		public async Task<int?> gameDuragion(int duration, string childEmail)
 		{
-			throw new NotImplementedException();
-		}
+			if (duration == 0)
+				return null;
+
+			double durationInMinute = (double) duration/ 60;
+			int gameScore = calcGameScore(durationInMinute);
+
+			var res = await SumToChildScore(gameScore, childEmail);
+           
+			if (res == 0)
+                return null;
+            return res;
+        } 
 		private int calcVideoScore(VideoDto videoDto)
 		{
 			int score = 0;
@@ -49,7 +60,23 @@ namespace GP.Focusi.Repository.Repositories
 			return score;
 		}
 
-
+		private int calcGameScore(double duration)
+		{
+			int score = 0;
+			if(duration >0 && duration <= 1.5)
+			{
+				score += 6;
+			}
+			else if(duration >1.5 && duration <= 3.3)
+			{
+				score += 4;
+			}
+			else if(duration >3.3 && duration < 5)
+			{
+				score += 3;
+			}
+			return score;
+		}
 		private async Task<int> SumToChildScore(int score, string childEmail)
 		{
 			if(childEmail is  null)
@@ -62,6 +89,20 @@ namespace GP.Focusi.Repository.Repositories
 
 			child.ChildScore += score;
 			var res = await _userManager.UpdateAsync(child);
+
+			if(child.ChildScore >= 100)
+			{
+				string? chClass = child.ChildClass;
+				
+				if(chClass == "A")
+					child.ChildClass = "B";
+
+				else if(chClass == "B")
+					child.ChildClass = "C";
+
+				await _userManager.UpdateAsync(child);
+
+			}
 
 			if(!res.Succeeded) 
 				return 0;

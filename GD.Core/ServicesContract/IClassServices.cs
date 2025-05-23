@@ -10,6 +10,6 @@ namespace GP.Focusi.Core.ServicesContract
     public interface IClassServices
     {
         Task<int?> addVideoData(VideoDto videoDto, string childEmail);
-        Task<int?> gameDuragion(double duration, string childEmail);
+        Task<int?> gameDuragion(int duration, string childEmail);
     }
 }

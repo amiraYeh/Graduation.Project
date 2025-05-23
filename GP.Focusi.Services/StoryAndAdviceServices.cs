@@ -23,7 +23,7 @@ namespace GP.Focusi.Services
 			_adviceRepository = adviceRepository;
 			_storyRepository = storyRepository;
 		}
-		public async Task<IEnumerable<object>> AllAdvices(string email)
+		public async Task<List<string>> AllAdvices(string email)
 		{
 			string childClass = await getChildClass(email);
 
@@ -33,7 +33,7 @@ namespace GP.Focusi.Services
 			return await _adviceRepository.GetAllAsync(childClass);
 		}
 
-		public async Task<IEnumerable<object>> AllStories(string email)
+		public async Task<List<string>> AllStories(string email)
 		{
 			string childClass = await getChildClass(email);
 

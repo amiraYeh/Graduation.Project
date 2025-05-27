@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using GP.Focusi.Repository.Identity;
 using GP.Focusi.Repository.Data.Contexts;
+using GP.Focusi.Repository.Data;
 
 namespace GP.Focusi.API.Helper
 {
@@ -24,6 +25,7 @@ namespace GP.Focusi.API.Helper
 			try
 			{
 				await context.Database.MigrateAsync();// should Add migration first
+				 await FocusiDbContextSeed.seedAsync(context);
 
 			    await identityContext.Database.MigrateAsync();
 				//await FocusiIdentityDbContextSeed.SeedUserAsync(userManager);

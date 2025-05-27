@@ -1,0 +1,18 @@
+[
+  {
+    "ClassType": "A",
+    "Content": "advice_1_A"
+  },
+  {
+    "ClassType": "B",
+    "Content": "advice_1_B"
+  },
+  {
+    "ClassType": "C",
+    "Content": "advice_1_C"
+  },
+  {
+    "ClassType": "A",
+    "Content": "advice_2_A"
+  }
+]

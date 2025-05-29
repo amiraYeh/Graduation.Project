@@ -26,7 +26,7 @@ namespace GP.Focusi.Repository.Repositories
 		
 			if (typeof(TEntity) == typeof(Advice))
 			{
-				var res = await _context.Set<Advice>().Where(A => A.ClassType == classType).Select(A=>A.Content).ToListAsync();
+				var res = await _context.Set<Advice>().OrderBy(A=>A.ID).Select(A=>A.Content).ToListAsync();
 				
 				if (res is null)
 					return null;

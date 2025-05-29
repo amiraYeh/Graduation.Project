@@ -15,7 +15,6 @@ namespace GP.Focusi.Core.Entites.Identity
 		public string Gender { get; set; }
 		public DateTime DateOfCreation { set; get; }    //= DateOnly.FromDateTime(DateTime.Now);
 		public int ChildScore { get; set; } = 0;
-
         public string? ChildClass { get; set; }
 		public string? PictureUrl { get; set; } = null;
 

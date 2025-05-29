@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Azure.Core;
 using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json.Linq;
+using System.ComponentModel;
 
 
 namespace GP.Focusi.Services.Users
@@ -140,15 +141,19 @@ namespace GP.Focusi.Services.Users
 
 			var user = await _userManager.FindByEmailAsync(email);
 
-			if (user is null) return null;		
-			
-				return new CurrentUserDto()
+			if (user is null) return null;
+
+			return new CurrentUserDto()
 			{
+
 				Name = user.Name,
 				Age = user.Age,
-				Gender = user.Gender,
-				DateOfCreation = user.DateOfCreation,
-				PictureUrl = user.PictureUrl 
+				//Gender = user.Gender,
+				DateOfCreation = user.DateOfCreation ,
+				PictureUrl = user.PictureUrl, 
+				Email = user.Email,
+				TotalScore = user.ChildScore,
+				ChildClass = user.ChildClass
 			};
 
 		}
@@ -201,5 +206,21 @@ namespace GP.Focusi.Services.Users
 			return 1;
 
 		}
-	}
+
+        public async Task<string> UpdateProfileAsync(string? email, string name, int age)
+        {
+			if (email is null)
+				return null;
+			var user = await _userManager.FindByEmailAsync(email);
+			user.Name = name;
+			user.Age = age;
+
+			var res = await _userManager.UpdateAsync(user);
+
+			if (!res.Succeeded) return null;
+
+			return res.ToString();
+
+        }
+    }
 }

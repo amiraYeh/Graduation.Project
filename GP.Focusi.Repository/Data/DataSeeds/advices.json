@@ -1,18 +1,75 @@
 [
   {
-    "ClassType": "A",
-    "Content": "advice_1_A"
+    "ClassType": "B",
+    "Content": "Establish a daily homework routine: Some children need to take a break between school and homework or may need frequent breaks between assignments. Figure out what works best for your child in order to help her avoid distractions and procrastination."
   },
   {
     "ClassType": "B",
-    "Content": "advice_1_B"
+    "Content": "Help your kid “set up” in a distraction-free environment: Sometimes the best learning environment can actually be the kitchen table with music playing in the background. Experiment until you find the ideal learning spot."
   },
   {
     "ClassType": "C",
-    "Content": "advice_1_C"
+    "Content": "Get her started: Sit down with your child and make sure he understands what is required for each assignment."
   },
   {
     "ClassType": "A",
-    "Content": "advice_2_A"
+    "Content": "Supervise as needed: Most children need significant adult supervision to keep on task. As situations improve and the child matures, you can move away from constant supervision to frequent check-ins to make sure your child is on task."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Allow short breaks between assignments: Have your child stretch or have a snack once one assignment is complete. This can help make his workload seem more manageable."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Break down large assignments: Divide big assignments into “bites,” each one with a clear goal. If your child feels like a task is manageable, he’ll be less likely to become distracted"
+  },
+  {
+    "ClassType": "A",
+    "Content": " Anxiety may be the reason your child can’t focus : Anxiety is a common but often ignored cause of inattention among children described as “unfocused”, and this actually makes perfect sense."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Insufficient sleep has an impact on your child’s ability to concentrate : It is a well-known fact that poor sleeping habits have a negative impact on children’s focus and concentration."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Inappropriate diet : While it is impossible to accurately determine how sugar (candy, sodas, cereals, snacks, etc.) impacts your child’s behavior, we now know that a moderate consumption of sugar is better for children."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Excessive screen usage may lead to attention problems in children : Although the studies about screen time are inconclusive about “the right amount” and the “real impact” of screens on children, most screen-use researchers agree that too much screen time can have a negative impact on your child’s development.There have been suggestions that screens overstimulate your child and therefore reduce their ability to focus.Monitoring your child’s screen use and setting screen-use rules, establishing screen-free zones and forbidding screen use just before bedtime are easy ways that may help reduce their distraction."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Stress: It is not uncommon for children who have experienced traumatizing experiences to have a harder time paying attention.Stressors may include issues such as bullying or peer pressure, major changes affecting the family (divorce, homelessness, changing schools) or even negative thoughts."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Play games: Play games like Head-Toes-Knees-Shoulders and Simon says  helps kids concentrate and follow directions and is thus a perfect game to develop self-regulation and concentration skills."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Try the day_night task: The day-night task involves showing a child a card (or picture) and asking them to say the opposite of what is on the card. For example, a child is expected to say “day” when shown a dark card with stars.This tool has been used for years by researchers to improve children’s concentration."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Encourage make-believe play: Many researchers and educationists argue that intentional make-believe play is an important aspect of learning. It is a central element in children’s cognitive developmentCharles Schaefer, the play therapy expert, argues that role-playing helps a child learn to think ahead and reflect on appropriate responses to frustrating situations. When kids engage in role-playing, they are more thoughtful, flexible and creative in the face of everyday problems."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Try play planning: Play planning involves asking kids to determine what they would like to do (or will do) during a specific moment (for instance when they are bored)."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Focus on positive behavior: The more you focus on your child’s positive behavior, the more likely they are to repeat that behavior. Setting simple concentration goals that they can achieve and then reinforcing positive behavior can help improve their focus and concentration."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Avoiding multiple instructions can reduce your child’s difficulty with concentration: Kids struggling with concentration often have a harder time processing information. The more your child receives multiple instructions, the harder it will be for them to follow through.Breaking down instructions can therefore make it easier for them to understand expectations. Asking them to repeat what they have understood can also make it easier to keep focused. Simple questions such as “What will you do first? And then? What will you do next?” can also help them get a good mental picture of what they are expected to do."
+  },
+  {
+    "ClassType": "A",
+    "Content": "Be receptive to your child’s needs: Different people need different environments to concentrate. Some require calm and others can only concentrate if they can hear some background noise. Identifying what works best for your child can help reduce their inattentiveness."
   }
 ]
+  

@@ -23,7 +23,7 @@ namespace GP.Focusi.Repository.Data
             if (_context.Advices.Count() == 0)
             {
                 //D:\NewDownloads\VS&CB\C#\Graduation.Project.Solution\GP.Focusi.Repository\Data\DataSeeds\advices.json
-                var adviceData = File.ReadAllText(@"..\GP.Focusi.Repository\\Data\\DataSeeds\\advices.json");
+                var adviceData = File.ReadAllText(@"..\GP.Focusi.Repository\Data\DataSeeds\advices.json");
 
                 var advices = JsonSerializer.Deserialize<List<Advice>>(adviceData);
 

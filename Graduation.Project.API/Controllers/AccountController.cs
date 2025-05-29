@@ -1,4 +1,5 @@
 ﻿using GP.Focusi.APIs.Errors;
+using GP.Focusi.Core.DTOs;
 using GP.Focusi.Core.DTOs.Auth;
 using GP.Focusi.Core.Entites.Identity;
 using GP.Focusi.Core.ServicesContract;
@@ -105,7 +106,6 @@ namespace GP.Focusi.API.Controllers
 			return Ok(new {token= res});
 		}
 
-		
 
 		[HttpPost("resetPassword")]
 		public  async Task<ActionResult> ResetPassword([FromQuery] string token, ResetPasswordDto model)
@@ -124,6 +124,7 @@ namespace GP.Focusi.API.Controllers
 			return Ok("Password has been reseted successfuly");
 
 		}
+
 		[Authorize]
 		[HttpPut("addProfilePicture")]
 		public async Task<IActionResult> AddProPicture([FromForm]ChPictureDto model)
@@ -134,23 +135,61 @@ namespace GP.Focusi.API.Controllers
 
 			var userName = User.FindFirstValue(ClaimTypes.Name);
 
-			string pictureName = $"{userName}" + "_" + $"{model.Picture.FileName}";
-			string pathDB = $"{Request.Scheme}://{Request.Host}/ProfilePictures/{pictureName}";
-			string path = $@".\wwwroot\ProfilePictures\{pictureName.Normalize()}";
+			var res = await makePictureUrl(userEmail, userName, model.Picture);
+			
+			if(res < 1)
+                return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 
-
-			//var x = $"{Request.Scheme}://{Request.Host}/ProfilePictures/{pictureName}";
-			using (var stream = new FileStream(Path.Combine(path), FileMode.Create, FileAccess.Write))
-			{
-				var res = await _userService.ProfilePicture(pathDB, userEmail);
-				if (res < 1)
-					return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
-
-				model.Picture.CopyTo(stream);
-			}
-
-			return Ok("Your Picture Saved Successfully");
+            return Ok("Your Picture Saved Successfully");
 
 		}
-	}
+
+		[Authorize]
+		[HttpPut("editProfile")]
+		public async Task<IActionResult> updateProfile([FromForm] EditProfileDto profileDto )
+		{
+
+            var childEmail = User.FindFirstValue(ClaimTypes.Email);
+
+            if (childEmail is null)
+                return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+
+            var userName = User.FindFirstValue(ClaimTypes.Name);
+
+            if (ModelState.IsValid)
+			{
+                if (profileDto.Picture is not null)
+				{
+					var resPic = await makePictureUrl(childEmail, userName, profileDto.Picture);
+					if(resPic < 1)
+                        return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+                }
+
+                var res = await _userService.UpdateProfileAsync(childEmail, profileDto.Name, profileDto.Age);
+
+				if (res is null)
+					return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+                 
+                return Ok();
+			}
+			return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Invalid Input"));
+        }
+
+		private async Task<int> makePictureUrl(string email, string userName, IFormFile file)
+		{
+            string pictureName = $"{userName}" + "_" + $"{file.FileName}";
+            string pathDB = $"{Request.Scheme}://{Request.Host}/ProfilePictures/{pictureName}";
+            string path = $@".\wwwroot\ProfilePictures\{pictureName.Normalize()}";
+
+            using (var stream = new FileStream(Path.Combine(path), FileMode.Create, FileAccess.Write))
+            {
+                var res = await _userService.ProfilePicture(pathDB, email);
+                if (res < 1)
+                    return 0;
+
+                file.CopyTo(stream);
+            }
+			return 1;
+        }
+    }
 }

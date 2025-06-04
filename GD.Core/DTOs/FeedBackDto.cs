@@ -28,6 +28,6 @@ namespace GP.Focusi.Core.DTOs
 		[Required(ErrorMessage = "This Field is Required")]
 		public string Q7Answer { get; set; }
 
-		public string? Suggestions { get; set; } = null;
+		public string? Suggestions { get; set; } 
 	}
 }

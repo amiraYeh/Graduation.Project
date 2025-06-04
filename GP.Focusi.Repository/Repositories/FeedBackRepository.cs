@@ -49,7 +49,7 @@ namespace GP.Focusi.Repository.Repositories
 				Q5ContinueInProgram = feedBack.Q5Answer,
 				Q6RecomendProgram = feedBack.Q6Answer,
 				Q7MostHelpfulPart = feedBack.Q7Answer,
-				Suggestions = feedBack.Q7Answer
+				Suggestions = feedBack.Suggestions
 			};
 			return res;
 		}

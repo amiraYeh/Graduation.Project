@@ -35,7 +35,7 @@ namespace GP.Focusi.Repository.Repositories
 			}
 			else if (typeof(TEntity) == typeof(Story))
 			{
-				var res = await _context.Set<Story>().Where(S => S.ClassType == classType).Select(S => S.Content).ToListAsync();
+				var res = await _context.Set<Story>().Select(S => S.StoryName).ToListAsync();
 
 				if (res is null)
 					return null;

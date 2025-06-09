@@ -9,6 +9,6 @@ namespace GP.Focusi.Core.Entites
 	public class Story : BaseEntity<int>
 	{
         public string ClassType { get; set; }
-		public string Content { get; set; }
+		public string StoryName { get; set; }
     }
 }

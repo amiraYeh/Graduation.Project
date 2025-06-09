@@ -1,4 +1,5 @@
-﻿using GP.Focusi.APIs.Errors;
+﻿using GP.Focusi.API.Attributes;
+using GP.Focusi.APIs.Errors;
 using GP.Focusi.Core.DTOs;
 using GP.Focusi.Core.Entites;
 using GP.Focusi.Core.ServicesContract;
@@ -21,6 +22,7 @@ namespace GP.Focusi.API.Controllers
 			_classServices = classServices;
 		}
 		[HttpGet("Advice")]
+		[Cached(3)]
 		public async Task<IActionResult> getAdvicesAsync()
 		{
 			var childEmail = User.FindFirstValue(ClaimTypes.Email);
@@ -33,16 +35,18 @@ namespace GP.Focusi.API.Controllers
 			return Ok(res);
 		}
 		[HttpGet("Story")]
-		public async Task<IActionResult> getStoriesAsync()
+        [Cached(3)]
+        public async Task<IActionResult> getStoriesAsync()
 		{
 			var childEmail = User.FindFirstValue(ClaimTypes.Email);
 			if (childEmail is null)
 				return BadRequest(new ApiErrorResponse(StatusCodes.Status401Unauthorized));
-			var res = await _storyAndAdviceServices.AllStories(childEmail);
-			if (res is null)
+			var storiesName = await _storyAndAdviceServices.AllStories(childEmail);
+			if (storiesName is null)
 				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
-			List<string> x = res as List<string>;
-			Console.WriteLine(x[0]);
+			
+			var res = await storyMapAsync(storiesName);
+
 			return Ok(res);
 		}
 
@@ -72,5 +76,23 @@ namespace GP.Focusi.API.Controllers
 
         }
 
+
+		private async Task<List<StoryDto>> storyMapAsync(List<string> stories)
+		{
+			var res = new List<StoryDto>();
+
+			foreach (var story in stories)
+			{
+
+				StoryDto storyDto = new StoryDto
+				{
+					StoryName = story,
+					StoryUrl = $"{Request.Scheme}://{Request.Host}/AllStories/{story}.pdf",
+					CoverPageUrl = $"{Request.Scheme}://{Request.Host}/StoriesCovers/{story}.png"
+				};
+                res.Add(storyDto);
+			}
+			return res;
+		}
 	}
 }

@@ -1,6 +1,38 @@
 [
   {
     "ClassType": "A",
-    "Content": " Story1"
+    "StoryName": "Snow White"
+  },
+  {
+    "ClassType": "A",
+    "StoryName": "The Ants and The Pen"
+  },
+  {
+    "ClassType": "A",
+    "StoryName": "After a Swim"
+  },
+  {
+    "ClassType": "A",
+    "StoryName": "The Man The Tree And The Wolf"
+  },
+  {
+    "ClassType": "A",
+    "StoryName": "The Boy Who Cried Wolf"
+  },
+  {
+    "ClassType": "A",
+    "StoryName": "Little Red Riding Hood"
+  },
+  {
+    "ClassType": "A",
+    "StoryName": "The Tortoise and the Hare"
+  },
+  {
+    "ClassType": "A",
+    "StoryName": "The Boy With No Voice And The Men Who Could’nt Hear"
+  },
+  {
+    "ClassType": "A",
+    "StoryName": "The Fisherman’s Neighbour"
   }
 ]

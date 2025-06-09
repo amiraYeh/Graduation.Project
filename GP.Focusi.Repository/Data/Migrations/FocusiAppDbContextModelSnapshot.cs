@@ -149,6 +149,9 @@ namespace GP.Focusi.Repository.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("PictureUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -198,7 +201,7 @@ namespace GP.Focusi.Repository.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Content")
+                    b.Property<string>("StoryName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

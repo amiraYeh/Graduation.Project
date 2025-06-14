@@ -43,7 +43,7 @@ namespace GP.Focusi.API.Attributes
 		private string GenerateCacheKeyFromRequest(HttpRequest request) 
 		{		
 			var cacheKey = new StringBuilder();
-			cacheKey.Append($"{request}");
+			cacheKey.Append($"{request.Host}:{request.Path}");
 
 			foreach (var (key, value) in request.Query.OrderBy(X => X.Key)) 
 			{

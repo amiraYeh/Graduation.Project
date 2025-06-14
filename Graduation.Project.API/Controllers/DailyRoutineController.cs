@@ -2,6 +2,7 @@
 using GP.Focusi.API.Attributes;
 using GP.Focusi.APIs.Errors;
 using GP.Focusi.Core.DTOs;
+using GP.Focusi.Core.DTOs.Auth;
 using GP.Focusi.Core.Entites;
 using GP.Focusi.Core.RepositoriesContract;
 using GP.Focusi.Core.ServicesContract;
@@ -40,7 +41,7 @@ namespace GP.Focusi.API.Controllers
 		}
 
 		[HttpPost("addtask")]
-		public async Task<ActionResult<TaskManagerItemsDto>>AddTask(TaskManagerItemsDto itemDto)
+		public async Task<ActionResult<TaskManagerItemsDto>>AddTask(AddTaskManagerItemsDto itemDto)
 		{
 			var UserEmail = User.FindFirstValue(ClaimTypes.Email);
 
@@ -61,7 +62,7 @@ namespace GP.Focusi.API.Controllers
 			if (itemDto.IsCompleted)
 			{
 				await _taskManagerService.UpdateTask(UserEmail, itemDto);
-				await _taskManagerService.DeletTask(itemDto.Name);
+				await _taskManagerService.DeletTask(itemDto.Id);
 				return Ok("You Have Finshed this Task Keep going :)");
 			}
 			var item = await _taskManagerService.UpdateTask(UserEmail,itemDto);
@@ -72,9 +73,9 @@ namespace GP.Focusi.API.Controllers
 		}
 
         [HttpDelete("delete")]
-		 public async Task <IActionResult> DeleteTask(string name)
+		 public async Task <IActionResult> DeleteTask(int id)
 		{
-			 var res = await _taskManagerService.DeletTask(name);
+			 var res = await _taskManagerService.DeletTask(id);
 
 			if (res <= 0) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 

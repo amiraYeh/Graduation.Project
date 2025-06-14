@@ -27,6 +27,11 @@ namespace GP.Focusi.Repository.Repositories
 
 			if (child is null) return 0;
 
+			var chClass = child.ChildClass;
+
+			if (chClass is not null) // It Mean that user Do the test pefore
+				return 2;
+
 			var parent_test = mapParentTest(childEmail, DistractionRatio);
 			if(parent_test is null)	return 0;
 

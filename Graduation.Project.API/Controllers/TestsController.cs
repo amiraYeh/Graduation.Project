@@ -27,8 +27,13 @@ namespace GP.Focusi.API.Controllers
 
 			if (res is < 1) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 
-			return Ok("Your Answer Saved Successfully");
+			 
+            if (res == 2)
+				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "You have been done this test pefore"));
+
+            return Ok("Your Answer Saved Successfully");
 
 		}
+		
 	}
 }

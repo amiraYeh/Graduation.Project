@@ -34,5 +34,6 @@ namespace GP.Focusi.Services
 			}
 			return sum;
 		}
+
 	}
 }

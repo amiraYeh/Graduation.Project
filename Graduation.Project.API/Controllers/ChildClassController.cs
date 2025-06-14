@@ -21,8 +21,9 @@ namespace GP.Focusi.API.Controllers
 			_storyAndAdviceServices = storyAndAdviceServices;
 			_classServices = classServices;
 		}
+
 		[HttpGet("Advice")]
-		public async Task<IActionResult> getAdvicesAsync()
+        public async Task<IActionResult> getAdvicesAsync()
 		{
 			var childEmail = User.FindFirstValue(ClaimTypes.Email);
 			if (childEmail is null)
@@ -34,6 +35,7 @@ namespace GP.Focusi.API.Controllers
 			return Ok(res);
 		}
 		[HttpGet("Story")]
+		[Cached(2)]
         public async Task<IActionResult> getStoriesAsync()
 		{
 			var childEmail = User.FindFirstValue(ClaimTypes.Email);

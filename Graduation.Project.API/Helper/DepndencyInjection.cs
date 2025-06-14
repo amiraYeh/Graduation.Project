@@ -105,6 +105,8 @@ namespace GP.Focusi.API.Helper
 			services.AddScoped<IStoryAndAdviceRepository<Advice>,StoryAndAdviceRepository<Advice>>();
 			services.AddScoped<IStoryAndAdviceRepository<Story>, StoryAndAdviceRepository<Story>>();
 			services.AddScoped<IClassServices, ClassService>();
+			services.AddScoped<IChildTestService, ChildTestService>();
+			services.AddScoped<IChildTestRepository, ChildTestRepository>();
 
 
 			return services;

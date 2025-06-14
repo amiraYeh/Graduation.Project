@@ -1,4 +1,5 @@
-﻿using GP.Focusi.Core.Entites;
+﻿using GP.Focusi.Core.DTOs.Auth;
+using GP.Focusi.Core.Entites;
 using GP.Focusi.Core.Entites.Identity;
 using GP.Focusi.Core.RepositoriesContract;
 using GP.Focusi.Repository.Data.Contexts;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using sib_api_v3_sdk.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -47,12 +49,12 @@ namespace GP.Focusi.Repository.Repositories
 			return tasks;
 		}
 
-		public async Task<TaskManagerItems> GetTaskAsync(string name)
+		public async Task<TaskManagerItems> GetTaskAsync(int? id)
 		{
-			return await _context.TaskManagerItems.FirstOrDefaultAsync(T => T.Name == name);
+			return await _context.TaskManagerItems.FindAsync(id);
 		}
 
-		public async Task<int> CreateTaskAsync(TaskManagerItems taskItem)
+		public async Task<TaskManagerItemsDto> CreateTaskAsync(TaskManagerItems taskItem)
 		{
 			List<TaskManagerItems> x = new List<TaskManagerItems>();
 			
@@ -85,12 +87,23 @@ namespace GP.Focusi.Repository.Repositories
 			}
 
 			await _context.TaskManagerItems.AddAsync(taskItem);
-			return await _context.SaveChangesAsync();
+			 var res = await _context.SaveChangesAsync();
+			if (res < 1)
+				return null;
+
+			return new TaskManagerItemsDto()
+			{
+				Id = taskItem.ID,
+				date = taskItem.date,
+				IsCompleted = taskItem.IsCompleted,
+				IsDateAndTimeEnded = taskItem.IsDateAndTimeEnded,
+				Name = taskItem.Name
+			};
 		}
 
-		public async Task<int> DeleteTaskAsync(string name)
+		public async Task<int> DeleteTaskAsync(int? id)
 		{
-			var task = await _context.TaskManagerItems.FirstOrDefaultAsync(T=>T.Name == name);
+			var task = await _context.TaskManagerItems.FindAsync(id);
 
 			if (task is null) return 0;
 
@@ -134,7 +147,25 @@ namespace GP.Focusi.Repository.Repositories
 			_context.SaveChanges();
 		}
 
+        public async Task<int> UpdateTaskAsync(TaskManagerItems taskItem)
+        {
+			if (taskItem is null)
+				return -1;
 
+			var task = await _context.TaskManagerItems.FindAsync(taskItem.ID);
 
-	}
+			if (task is null)
+				return -1;
+
+			task.date = taskItem.date;
+			task.IsDateAndTimeEnded = taskItem.IsDateAndTimeEnded;
+			task.IsCompleted = taskItem.IsCompleted;
+			task.Name = taskItem.Name;
+
+			_context.TaskManagerItems.Update(task);
+            var res = await _context.SaveChangesAsync();
+			
+			return res;
+        }
+    }
 }

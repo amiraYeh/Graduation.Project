@@ -8,7 +8,7 @@ namespace GP.Focusi.API.Mapping
 	{
         public TaskManagerProfile()
         {
-			CreateMap<TaskManagerItems, TaskManagerItemsDto>().ReverseMap();
+			CreateMap<TaskManagerItems, AddTaskManagerItemsDto>().ReverseMap();
 
 		}
 

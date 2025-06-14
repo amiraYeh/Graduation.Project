@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using GP.Focusi.Core.DTOs;
+using GP.Focusi.Core.DTOs.Auth;
 using GP.Focusi.Core.Entites;
 using GP.Focusi.Core.RepositoriesContract;
 using GP.Focusi.Core.ServicesContract;
@@ -41,17 +42,17 @@ namespace GP.Focusi.Services
 			}
 			return null;
 		}
-		public async Task<TaskManagerItemsDto> GetTask(string name)
+		public async Task<TaskManagerItemsDto> GetTask(int? id)
 		{
-			if(name is null) return null ;
+			if(id is null) return null ;
 
-			var task = await _taskRepository.GetTaskAsync(name);
+			var task = await _taskRepository.GetTaskAsync(id);
 			
 			if (task is null) return null;
 
 			return _mapper.Map<TaskManagerItemsDto>(task);
 		}
-		public async Task<TaskManagerItemsDto> CreateTask(string email, TaskManagerItemsDto taskItemsDto)
+		public async Task<TaskManagerItemsDto> CreateTask(string email, AddTaskManagerItemsDto taskItemsDto)
 		{
 			try
 			{
@@ -60,11 +61,8 @@ namespace GP.Focusi.Services
 				var task = _mapper.Map<TaskManagerItems>(taskItemsDto);
 				task.ChildEmail = email;
 				
-				var created = await _taskRepository.CreateTaskAsync(task);
+				return await _taskRepository.CreateTaskAsync(task);
 
-				if (created < 1) return null;
-
-				return taskItemsDto;
 			}
 			catch (Exception ex)
 			{
@@ -78,38 +76,46 @@ namespace GP.Focusi.Services
 			{
 				if ( taskDto is null) return null;
 
-				var task = await _taskRepository.GetTaskAsync(taskDto.Name);
-				if (task is null) return null;
+				if (email is null)
+					return null;
 
-				var T = new TaskManagerItems()
+				var Task = new TaskManagerItems()
 				{
-					//ID = task.ID,
-					ChildEmail = email,
+					ID = taskDto.Id,
 					Name = taskDto.Name,
 					date = taskDto.date,
 					IsCompleted = taskDto.IsCompleted,
 					IsDateAndTimeEnded = taskDto.IsDateAndTimeEnded,
-					TaskManagerId = task.TaskManagerId,
-					TaskManager = task.TaskManager
+					
 				};
-				
-				await _taskRepository.DeleteTaskAsync(task.Name);
-				var result = await _taskRepository.CreateTaskAsync(T);
+				var res = await _taskRepository.UpdateTaskAsync(Task);
 
-				if (result < 1) return null;
+				if (res < 1)
+					return null;
 
 				return taskDto;
-			}catch (Exception ex) 
+				//if(taskDto.IsCompleted == true)
+				//{
+				//	await _taskRepository.DeleteTaskAsync(taskDto.Id);
+				//}
+				//
+				//var result = await _taskRepository.CreateTaskAsync(T);
+
+				//if (result < 1) return null;
+
+				//return taskDto;
+			}
+			catch (Exception ex) 
 			{
 				ErrorModel error = new ErrorModel(message: ex.Message);
 			}
 			return null;
 		}
-		public async Task<int> DeletTask(string name)
+		public async Task<int> DeletTask(int? id)
 		{
-			if (name is null) return 0;
+			if (id is null) return 0;
 
-			 return	await _taskRepository.DeleteTaskAsync(name);
+			 return	await _taskRepository.DeleteTaskAsync(id);
 		}
 
 	}

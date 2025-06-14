@@ -1,4 +1,5 @@
 ﻿using GP.Focusi.Core.DTOs;
+using GP.Focusi.Core.DTOs.Auth;
 using GP.Focusi.Core.Entites;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,9 @@ namespace GP.Focusi.Core.RepositoriesContract
 	{
 		
 		Task<List<object>> GetAllTasksAsync(string email);
-		Task<TaskManagerItems> GetTaskAsync(string name);
-		Task<int> CreateTaskAsync(TaskManagerItems taskItem);
-		Task<int> DeleteTaskAsync(string name);
+		Task<TaskManagerItems> GetTaskAsync(int? id);
+		Task<TaskManagerItemsDto> CreateTaskAsync(TaskManagerItems taskItem);
+		Task<int> DeleteTaskAsync(int? id);
+		Task<int> UpdateTaskAsync(TaskManagerItems taskItem);
 	}
 }

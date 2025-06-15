@@ -16,6 +16,7 @@ using GP.Focusi.API.Mapping;
 using GP.Focusi.Core.RepositoriesContract;
 using GP.Focusi.Repository.Repositories;
 using GP.Focusi.Core.Entites;
+using GP.Focusi.Services.Roles;
 
 
 namespace GP.Focusi.API.Helper
@@ -33,7 +34,9 @@ namespace GP.Focusi.API.Helper
 			services.AddAuthenticationService(configurations);
 			services.AddRedisService(configurations);
 			services.AddCorsService();
-			return services;
+			services.AddAuthorizationService();
+
+            return services;
 		}
 
 		private static IServiceCollection AddBiltInService(this IServiceCollection services)
@@ -107,6 +110,7 @@ namespace GP.Focusi.API.Helper
 			services.AddScoped<IClassServices, ClassService>();
 			services.AddScoped<IChildTestService, ChildTestService>();
 			services.AddScoped<IChildTestRepository, ChildTestRepository>();
+			services.AddScoped<IRoleServices, RoleServices>();
 
 
 			return services;
@@ -147,8 +151,22 @@ namespace GP.Focusi.API.Helper
 			});
 			return services;
 		}
+		private static IServiceCollection AddAuthorizationService(this IServiceCollection services)
+		{
+			services.AddAuthorization(options => {
+				options.AddPolicy("TestsAccessPolicy", policy =>
+					policy.RequireRole("TestsAccess"));
 
-		private static IServiceCollection AddRedisService(this IServiceCollection services, IConfiguration configuration)
+                options.AddPolicy("AdminPolicy", policy =>
+                    policy.RequireRole("Admin"));
+
+                options.AddPolicy("UserPolicy", policy =>
+                    policy.RequireRole("User"));
+            }); 
+
+            return services;
+		}
+        private static IServiceCollection AddRedisService(this IServiceCollection services, IConfiguration configuration)
 		{
 
 			services.AddSingleton<IConnectionMultiplexer>(options =>

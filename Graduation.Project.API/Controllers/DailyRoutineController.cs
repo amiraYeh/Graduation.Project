@@ -28,6 +28,7 @@ namespace GP.Focusi.API.Controllers
 		public async Task<ActionResult<object>> GetTaskManager()
 		{
 			var UserEmail = User.FindFirstValue(ClaimTypes.Email);
+			//var classed = User.FindFirstValue(ClaimTypes.)
 
 			if (UserEmail is null)
 				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));

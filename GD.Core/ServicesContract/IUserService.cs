@@ -21,6 +21,8 @@ namespace GP.Focusi.Core.ServicesContract
 
 		Task<string> resetPasswordAsync(string token, ResetPasswordDto resetPasswordDto);
 		Task<string> UpdateProfileAsync(string email,string name, int age);
+		Task<string> addUserRoleAsync(string roleName, string email);
+		Task<bool> IsUserHaveThisRole(string roleName, string email);
 
 	}
 }

@@ -54,6 +54,7 @@ namespace GP.Focusi.Services.Users
 			var resultConfirm = await _userManager.IsEmailConfirmedAsync(user);
 			if (!resultConfirm)
 				return null;
+
 			if (!await _userManager.IsInRoleAsync(user, "User"))
 			{
 				var roles = new List<string> { "User", "TestsAccess" };
@@ -63,6 +64,13 @@ namespace GP.Focusi.Services.Users
 				if (roleR < 1)
 					return null;
 			}
+            var userClass = user.ChildClass;
+			if(userClass is not null)
+			{
+				await _userManager.RemoveFromRoleAsync(user, "TestsAccess");
+				await CheckAndAddUserRoleAsync(new List<string> { "ClassAccess" }, user);
+			}
+
             return new UserDto()
 			{
 				Name = user.Name,

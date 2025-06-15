@@ -175,6 +175,7 @@ namespace GP.Focusi.API.Controllers
 			return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Invalid Input"));
         }
 
+
 		private async Task<int> makePictureUrl(string email, string userName, IFormFile file)
 		{
             string pictureName = $"{userName}" + "_" + $"{file.FileName}";

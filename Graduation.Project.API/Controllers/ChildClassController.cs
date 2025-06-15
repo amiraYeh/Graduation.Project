@@ -22,7 +22,14 @@ namespace GP.Focusi.API.Controllers
 			_classServices = classServices;
 		}
 
-		[HttpGet("Advice")]
+        [Authorize(Roles = "ClassAccess")]
+        [HttpGet]
+        public IActionResult TestAccess()
+        {
+            return Ok("You have Access to Class");
+        }
+
+        [HttpGet("Advice")]
 		[Cached(10)]
         public async Task<IActionResult> getAdvicesAsync()
 		{

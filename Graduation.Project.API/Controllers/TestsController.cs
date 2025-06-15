@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace GP.Focusi.API.Controllers
 {
-	[Authorize(Roles ="TestsAccess")]
+	[Authorize]
 	public class TestsController : BaseAppController
 	{
 		private readonly IParentTestService _parentTestService;
@@ -20,29 +20,19 @@ namespace GP.Focusi.API.Controllers
             _roleServices = roleServices;
             _userService = userService;
         }
-		//private async Task<int> addRoleAsync(string roleName)
-		//{
-		//	return await _roleServices.createRolesAsync(roleName);
-		//}
-		//private async Task giveRoleToUser(string roleName,string email)
-		//{
-  //          int roleRes = 0;
-  //          if (roleRes != 1)
-  //              roleRes = await	addRoleAsync(roleName);
 
-			
 
-  //      }
-		[HttpPut("ParentsTest")]
+        [Authorize(Roles = "TestsAccess")]
+        [HttpGet]
+        public IActionResult TestAccess()
+        {
+            return Ok("You have Access to Test");
+        }
+        [HttpPut("ParentsTest")]
 		public async Task<IActionResult> ParentsTest([FromBody]List<int> testAnswer)
 		{
 			var childEmail = User.FindFirstValue(ClaimTypes.Email);
-			//int roleRes = 0;
-			//if (roleRes != 1) 
-			//	roleRes = await addRoleAsync();
-			//var chId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 			
-
 			if (testAnswer.Count < 0 || childEmail is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 			
 			var res = await _parentTestService.GetDistractionRatioAsync(childEmail, testAnswer);

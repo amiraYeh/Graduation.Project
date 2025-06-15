@@ -21,6 +21,7 @@ namespace GP.Focusi.Repository.Repositories
 			_context = context;
 			_userManager = userManager;
 		}
+
 		public async Task<int> AddParentTestAnswerAsync(string childEmail, int DistractionRatio)
 		{
 			var child  = await _userManager.FindByEmailAsync(childEmail);
@@ -29,10 +30,10 @@ namespace GP.Focusi.Repository.Repositories
 
 			var chClass = child.ChildClass;
 
-			if (chClass is not null) // It Mean that user Do the test pefore
-			{
-				var roleR = await _userManager.RemoveFromRoleAsync(child, "TestsAccess");				
-			}
+			//if (chClass is not null) // It Mean that user Do the test pefore
+			//{
+			//	var roleR = await _userManager.RemoveFromRoleAsync(child, "TestsAccess");				
+			//}
 
 			var parent_test = mapParentTest(childEmail, DistractionRatio);
 			if(parent_test is null)	return 0;

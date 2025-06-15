@@ -1,12 +1,14 @@
 ﻿using GP.Focusi.APIs.Errors;
 using GP.Focusi.Core.ServicesContract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace GP.Focusi.API.Controllers
 {
-  
+
+    [Authorize(Roles = "TestsAccess")]
     public class ChildTestController : BaseAppController
     {
         private readonly IChildTestService _childTestService;

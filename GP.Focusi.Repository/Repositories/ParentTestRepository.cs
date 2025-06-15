@@ -30,7 +30,9 @@ namespace GP.Focusi.Repository.Repositories
 			var chClass = child.ChildClass;
 
 			if (chClass is not null) // It Mean that user Do the test pefore
-				return 2;
+			{
+				var roleR = await _userManager.RemoveFromRoleAsync(child, "TestsAccess");				
+			}
 
 			var parent_test = mapParentTest(childEmail, DistractionRatio);
 			if(parent_test is null)	return 0;

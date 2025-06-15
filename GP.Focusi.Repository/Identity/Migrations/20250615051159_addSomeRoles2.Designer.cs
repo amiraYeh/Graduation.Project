@@ -4,6 +4,7 @@ using GP.Focusi.Repository.Identity.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GP.Focusi.Repository.Identity.Migrations
 {
     [DbContext(typeof(FocusiIdentityDbContext))]
-    partial class FocusiIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250615051159_addSomeRoles2")]
+    partial class addSomeRoles2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -27,18 +27,20 @@ namespace GP.Focusi.Services.Users
 		private readonly ITokenService _tokenService;
 		private readonly IConfiguration _configuration;
 		private readonly IEmailSenderService _emailService;
+        private readonly IRoleServices _roleServices;
 
-		public UserServise(UserManager<AppUserChild> userManager, 
+        public UserServise(UserManager<AppUserChild> userManager, 
 			SignInManager<AppUserChild> signInManager,
 			ITokenService tokenService, IConfiguration configuration,
-			IEmailSenderService emailService)
+			IEmailSenderService emailService, IRoleServices roleServices)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 			_tokenService = tokenService;
 			_configuration = configuration;
 			_emailService = emailService;
-		}
+            _roleServices = roleServices;
+        }
 
 		public async Task<UserDto> LoginAsync(LoginDto loginDto)
 		{
@@ -52,8 +54,16 @@ namespace GP.Focusi.Services.Users
 			var resultConfirm = await _userManager.IsEmailConfirmedAsync(user);
 			if (!resultConfirm)
 				return null;
+			if (!await _userManager.IsInRoleAsync(user, "User"))
+			{
+				var roles = new List<string> { "User", "TestsAccess" };
 
-			return new UserDto()
+				var roleR = await CheckAndAddUserRoleAsync(roles, user);
+
+				if (roleR < 1)
+					return null;
+			}
+            return new UserDto()
 			{
 				Name = user.Name,
 				Email = user.Email,
@@ -79,8 +89,28 @@ namespace GP.Focusi.Services.Users
 			var result = await _userManager.CreateAsync(user, registerDto.Password);
 			if (!result.Succeeded) return null;
 
+			//if(! await _roleServices.IsARole("User") || ! await _roleServices.IsARole("TestsAccess"))
+			//{
+			//	var roleRes = await _roleServices.createRolesAsync("User");
+			//             var roleRes2 = await _roleServices.createRolesAsync("TestsAccess");
+			//	if (roleRes < 1 || roleRes2 < 1)
+			//	{
+			//		await _userManager.DeleteAsync(user);
+			//		return null;
+			//	}
+			//}
+			//await _userManager.AddToRoleAsync(user, "User");
+			//         await _userManager.AddToRoleAsync(user, "TestsAccess");
+			//var isUser =
 			
-			var confirmToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+				var roles = new List<string> { "User", "TestsAccess" };
+
+				var roleR = await CheckAndAddUserRoleAsync(roles, user);
+
+				if (roleR < 1)
+					return null;
+			
+            var confirmToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 			var encodedConfirmTolen = Encoding.UTF8.GetBytes(confirmToken);
 			var validConfirmToken = WebEncoders.Base64UrlEncode(encodedConfirmTolen);
 
@@ -222,5 +252,51 @@ namespace GP.Focusi.Services.Users
 			return res.ToString();
 
         }
+
+        public async Task<string> addUserRoleAsync(string roleName, string email)
+        {
+			if (email is null)
+				return null;
+
+			var child = await _userManager.FindByEmailAsync(email);
+			var res = await _userManager.AddToRoleAsync(child, roleName);
+			if (!res.Succeeded)
+				return null; 
+			return res.ToString();
+        }
+
+        public async Task<bool> IsUserHaveThisRole(string roleName, string email)
+        {
+            if (email is null)
+                return false;
+
+            var child = await _userManager.FindByEmailAsync(email);
+			return await _userManager.IsInRoleAsync(child, roleName);
+ 
+        }
+
+		private async Task<int> CheckAndAddUserRoleAsync(List<string> roles, AppUserChild user)
+		{
+			foreach (var role in roles)
+			{
+				
+				if (!await _roleServices.IsARole(role))
+				{
+					var roleRes = await _roleServices.createRolesAsync(role);
+
+					if (roleRes < 1)
+					{
+						await _userManager.DeleteAsync(user);
+						return -1;
+					}
+				}
+				if (await _userManager.IsInRoleAsync(user, role))
+					continue;
+
+				await _userManager.AddToRoleAsync(user, role);
+
+			}
+			return 1;
+		}
     }
 }

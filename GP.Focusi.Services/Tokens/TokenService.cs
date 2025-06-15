@@ -28,7 +28,9 @@ namespace GP.Focusi.Services.Tokens
 			{
 				new Claim(ClaimTypes.Email,user.Email),
 				new Claim(ClaimTypes.Name,user.Name),
-				new Claim(ClaimTypes.Gender,user.Gender)
+				new Claim(ClaimTypes.Gender,user.Gender),
+				//new Claim(ClaimTypes.Role,"TestsAccess")
+
 			};
 			var userRole = await userManager.GetRolesAsync(user);
 

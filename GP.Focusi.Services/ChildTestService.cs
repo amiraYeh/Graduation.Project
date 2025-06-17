@@ -1,4 +1,5 @@
-﻿using GP.Focusi.Core.Entites.Identity;
+﻿using GP.Focusi.Core.DTOs;
+using GP.Focusi.Core.Entites.Identity;
 using GP.Focusi.Core.RepositoriesContract;
 using GP.Focusi.Core.ServicesContract;
 using Microsoft.AspNetCore.Identity;
@@ -14,59 +15,58 @@ namespace GP.Focusi.Services
     {
         private readonly UserManager<AppUserChild> _userManager;
         private readonly IChildTestRepository _childTestRepository;
+        private string childGameMail = "";
 
         public ChildTestService(UserManager<AppUserChild> userManager, IChildTestRepository childTestRepository) 
         {
             _userManager = userManager;
             _childTestRepository = childTestRepository;
         }
-        public async Task<int?> GameTest(string email, int gameFocusRatio)
+        public async Task<string> GameTest(string email, GameTestDto gameTestDto)
         {
             if (email is null)
                 return null;
 
-            var chClass = await getChildClass(email);
-
-            if (chClass is null)
-                return null;
+            int falsePhotos = gameTestDto.totalPhotos - gameTestDto.truePhotos;
+            int gameFocusRatio = calcFocusRatio(falsePhotos, gameTestDto.truePhotos);
 
             var res = await _childTestRepository.GameChildTestAsync(email, gameFocusRatio);
 
-            if(res < 1)
+            if(res is null)
                 return null;
 
             return res;
           
         }
 
-        public async Task<int?> VideoTest(string email, int videoFocusRatio)
+        public async Task<string> VideoTest(string email,VideoTestDto videoTestDto)
         {
             if (email is null)
                 return null;
-            var chClass = await getChildClass(email);
-
-            if (chClass is not null) // user done this test before
-                return null;
+           
+            int falsePhotos = videoTestDto.totalPhotos - videoTestDto.truePhotos;
+            int videoFocusRatio = calcFocusRatio(falsePhotos, videoTestDto.truePhotos);
 
             var res = await _childTestRepository.VideoChildTestAsync(email, videoFocusRatio);
 
-            if (res < 1)
+            if (res is null)
                 return null;
 
             return res;
         }
-        private async Task<string> getChildClass(string email)
+        private int calcFocusRatio(int falsePhotos, int truePhotos)
         {
-            if (email is null)
-                return null;
+            int focusRatio = 0;
 
-            var child = await _userManager.FindByEmailAsync(email);
+            if (truePhotos < falsePhotos)
+                focusRatio = 30;
+            else if (truePhotos == falsePhotos)
+                focusRatio = 50;
 
-            if (child is null)
-                return null;
+            else if (truePhotos > falsePhotos)
+                focusRatio = 60;
 
-            string childClass = child.ChildClass;
-            return childClass;
+            return focusRatio;
         }
-    }
+        }
 }

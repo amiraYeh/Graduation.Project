@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GP.Focusi.Core.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ namespace GP.Focusi.Core.ServicesContract
 {
     public interface IChildTestService
     {
-        public Task<int?> GameTest(string email, int gameFocusRatio);
-        public Task<int?> VideoTest(string email ,int videoFocusRatio);
+        public Task<string> GameTest(string email, GameTestDto gameTestDto);
+        public Task<string> VideoTest(string email ,VideoTestDto videoTestDto);
     }
 }

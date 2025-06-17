@@ -8,7 +8,7 @@ namespace GP.Focusi.Core.RepositoriesContract
 {
     public interface IChildTestRepository
     {
-        public Task<int> GameChildTestAsync(string email, int gameScore);
-        public Task<int> VideoChildTestAsync(string email, int videoScore);
+        public Task<string> GameChildTestAsync(string email, int gameScore);
+        public Task<string> VideoChildTestAsync(string email, int videoScore);
     }
 }

@@ -22,12 +22,12 @@ namespace GP.Focusi.API.Controllers
 			_classServices = classServices;
 		}
 
-        [Authorize(Roles = "ClassAccess")]
-        [HttpGet]
-        public IActionResult TestAccess()
-        {
-            return Ok("You have Access to Class");
-        }
+        //[Authorize(Roles = "ClassAccess")]
+        //[HttpGet]
+        //public IActionResult TestAccess()
+        //{
+        //    return Ok("You have Access to Class");
+        //}
 
         [HttpGet("Advice")]
 		[Cached(10)]

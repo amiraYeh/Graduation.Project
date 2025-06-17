@@ -59,7 +59,7 @@ namespace GP.Focusi.Repository.Repositories
 			List<TaskManagerItems> x = new List<TaskManagerItems>();
 			
 
-			TaskManager taskManager = await _context.TaskManagers.FirstOrDefaultAsync(T => T.ChildMail == taskItem.ChildEmail);
+			var taskManager = await _context.TaskManagers.FirstOrDefaultAsync(T => T.ChildMail == taskItem.ChildEmail);
 
 			if (taskManager is not null)
 			{

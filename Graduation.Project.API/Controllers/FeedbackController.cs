@@ -22,7 +22,8 @@ namespace GP.Focusi.API.Controllers
 		{
 			var childEmail = User.FindFirstValue(ClaimTypes.Email);
 
-			if (childEmail is null || feedBack is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+			if (childEmail is null || feedBack is null) 
+				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 
 			var res = await _feedBackRepository.AddFeedBackAsync(childEmail, feedBack);
 

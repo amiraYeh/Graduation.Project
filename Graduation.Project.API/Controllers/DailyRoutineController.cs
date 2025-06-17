@@ -28,7 +28,6 @@ namespace GP.Focusi.API.Controllers
 		public async Task<ActionResult<object>> GetTaskManager()
 		{
 			var UserEmail = User.FindFirstValue(ClaimTypes.Email);
-			//var classed = User.FindFirstValue(ClaimTypes.)
 
 			if (UserEmail is null)
 				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
@@ -48,7 +47,8 @@ namespace GP.Focusi.API.Controllers
 
 			var item = await _taskManagerService.CreateTask(UserEmail, itemDto);
 
-			if (item is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Invalid Operation!!"));
+			if (item is null) 
+				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Invalid Operation!!"));
 
 			return Ok(item);
 		}
@@ -78,7 +78,8 @@ namespace GP.Focusi.API.Controllers
 			}
 			var item = await _taskManagerService.UpdateTask(UserEmail,itemDto);
 
-			if (item is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Invalid Operation!!"));
+			if (item is null) 
+				return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest, "Invalid Operation!!"));
 
 			return Ok(item);
 		}

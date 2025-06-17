@@ -22,13 +22,13 @@ namespace GP.Focusi.API.Controllers
         }
 
 
-        [Authorize(Roles = "TestsAccess")]
-        [HttpGet]
-        public IActionResult TestAccess()
-        {
-            return Ok("You have Access to Test");
-        }
-        [HttpPut("ParentsTest")]
+		[Authorize(Roles = "TestsAccess")]
+		[HttpGet]
+		public IActionResult TestAccess()
+		{
+			return Ok("You have Access to Test");
+		}
+		[HttpPut("ParentsTest")]
 		public async Task<IActionResult> ParentsTest([FromBody]List<int> testAnswer)
 		{
 			var childEmail = User.FindFirstValue(ClaimTypes.Email);

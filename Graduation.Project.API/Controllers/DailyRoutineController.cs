@@ -54,13 +54,23 @@ namespace GP.Focusi.API.Controllers
 		}
 
 		[HttpPut("updatetask")]
-		public async Task<ActionResult<TaskManagerItemsDto>> EditeTask(TaskManagerItemsDto itemDto)
+		public async Task<ActionResult<TaskManagerItemsDto>> EditeTask([FromQuery]int id, [FromBody]AddTaskManagerItemsDto aItemDto)
 		{
 			var UserEmail = User.FindFirstValue(ClaimTypes.Email);
 
-			if (itemDto is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+			if (aItemDto is null) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
+            if (id == 0) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 
-			if (itemDto.IsCompleted)
+			var itemDto = new TaskManagerItemsDto
+			{
+				Id = id,
+				date = aItemDto.date,
+				Name = aItemDto.Name,
+				IsCompleted = aItemDto.IsCompleted,
+				IsDateAndTimeEnded = aItemDto.IsDateAndTimeEnded
+			};
+
+            if (itemDto.IsCompleted)
 			{
 				await _taskManagerService.UpdateTask(UserEmail, itemDto);
 				await _taskManagerService.DeletTask(itemDto.Id);
@@ -80,7 +90,7 @@ namespace GP.Focusi.API.Controllers
 
 			if (res <= 0) return BadRequest(new ApiErrorResponse(StatusCodes.Status400BadRequest));
 
-			return Ok();
+			return Ok("The Task Deleted Successfully");
 		}
 	}
 }

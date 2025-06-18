@@ -28,6 +28,7 @@ namespace GP.Focusi.Repository.Data.Contexts
 		public DbSet<Story> Stories { get; set; }
 		public DbSet<Advice> Advices { get; set; }
 		public DbSet<Videos> Videos { get; set; }
+		public DbSet<Report> Reports { get; set; }
 
 
 	}

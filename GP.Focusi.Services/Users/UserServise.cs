@@ -54,8 +54,14 @@ namespace GP.Focusi.Services.Users
 			var resultConfirm = await _userManager.IsEmailConfirmedAsync(user);
 			if (!resultConfirm)
 				return null;
+			if(loginDto.Email == "focusisystem5@gmail.com")
+			{
+				await CheckAndAddUserRoleAsync(new List<string> { "Admin" }, user);
+				await _userManager.AddToRoleAsync(user, "Admin");
+                Console.WriteLine("Adminn");
+			}
 
-			if (!await _userManager.IsInRoleAsync(user, "User"))
+			else if (!await _userManager.IsInRoleAsync(user, "User"))
 			{
 				var roles = new List<string> { "User", "TestsAccess" };
 

@@ -18,7 +18,6 @@ using GP.Focusi.Repository.Repositories;
 using GP.Focusi.Core.Entites;
 using GP.Focusi.Services.Roles;
 
-
 namespace GP.Focusi.API.Helper
 {
 	public static class DepndencyInjection
@@ -112,7 +111,7 @@ namespace GP.Focusi.API.Helper
 			services.AddScoped<IChildTestService, ChildTestService>();
 			services.AddScoped<IChildTestRepository, ChildTestRepository>();
 			services.AddScoped<IRoleServices, RoleServices>();
-
+			services.AddScoped<IReportRepository, ReportRepository>();
 
 			return services;
 		}

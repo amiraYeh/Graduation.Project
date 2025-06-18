@@ -8,7 +8,6 @@ using System.Security.Claims;
 
 namespace GP.Focusi.API.Controllers
 {
-    //[Authorize(Roles = "Admin")]
     public class AdminController : BaseAppController
     {
         private readonly IUserService _userService;

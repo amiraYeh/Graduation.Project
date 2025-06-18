@@ -49,13 +49,7 @@ namespace GP.Focusi.API.Helper
 			services.AddEndpointsApiExplorer();
 			services.AddSwaggerGen(options=>
 			{
-				//options.SwaggerDoc(
-				//	"V1",
-				//	new OpenApiInfo
-				//	{
-				//		Title = "Focusi Api"
-				//	}
-				//	);
+				
 				var securityScheme = new OpenApiSecurityScheme
 				{
 					Name = "Authorithation",

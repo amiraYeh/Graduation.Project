@@ -28,7 +28,7 @@ namespace GP.Focusi.API.Helper
 				 await FocusiDbContextSeed.seedAsync(context);
 
 			    await identityContext.Database.MigrateAsync();
-				//await FocusiIdentityDbContextSeed.SeedUserAsync(userManager);
+				await FocusiIdentityDbContextSeed.SeedUserAsync(userManager);
 			}
 			catch (Exception ex)
 			{

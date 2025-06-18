@@ -2,6 +2,7 @@
 using GP.Focusi.APIs.Errors;
 using GP.Focusi.Core.DTOs;
 using GP.Focusi.Core.Entites;
+using GP.Focusi.Core.Entites.Identity;
 using GP.Focusi.Core.ServicesContract;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +16,7 @@ namespace GP.Focusi.API.Controllers
     {
 		private readonly IStoryAndAdviceServices _storyAndAdviceServices;
 		private readonly IClassServices _classServices;
-
+		private string CChilddClass;
 		public ChildClassController(IStoryAndAdviceServices storyAndAdviceServices, IClassServices classServices)
 		{
 			_storyAndAdviceServices = storyAndAdviceServices;
@@ -83,15 +84,31 @@ namespace GP.Focusi.API.Controllers
             return Ok("Your Score is updated");
 
         }
+		[HttpGet("allVideos")]
+		//[Cached(10,)]
+		public async Task<IActionResult> getVideosByClass()
+		{
+            var childEmail = User.FindFirstValue(ClaimTypes.Email);
+			 CChilddClass = await _storyAndAdviceServices.getChildClass(childEmail);
+			if(childEmail is null)
+                return BadRequest(new ApiErrorResponse(StatusCodes.Status401Unauthorized));
 
+			var videosName = await _storyAndAdviceServices.AllVideosByClassAsync(childEmail);
+			
+			if(videosName is null)
+                return BadRequest(new ApiErrorResponse(StatusCodes.Status401Unauthorized));
 
-		private async Task<List<StoryDto>> storyMapAsync(List<string> stories)
+			var res = await videoMapAsync(videosName);
+
+            return Ok(res);
+        }
+
+        private async Task<List<StoryDto>> storyMapAsync(List<string> stories)
 		{
 			var res = new List<StoryDto>();
 
 			foreach (var story in stories)
 			{
-
 				StoryDto storyDto = new StoryDto
 				{
 					StoryName = story,
@@ -101,6 +118,47 @@ namespace GP.Focusi.API.Controllers
                 res.Add(storyDto);
 			}
 			return res;
+		}
+
+		private async Task<List<ClassVideoDto>> videoMapAsync(List<string> videos)
+		{
+			var res = new List<ClassVideoDto>();
+
+			foreach(var video in videos)
+			{
+				//D:\NewDownloads\VS&CB\C#\Graduation.Project.Solution\Graduation.Project.API\wwwroot\Class Videos\audio\A1animals_choices.mp3
+				string folderPath = @".\wwwroot\Class Videos\audio";
+				List<object> audioNames = new List<object>();
+                object audioUrls;
+				if (Directory.Exists(folderPath))
+				{
+					string[] audios = Directory.GetFiles(folderPath);
+					foreach (string audio in audios)
+					{
+						if (audio.Contains(video))
+						{
+							var path = Path.GetFileName(audio);
+                            int start = audio.IndexOf('_') + 1;
+                            int end = audio.LastIndexOf('.');
+                            int length = end - start;
+
+                            string name = audio.Substring(start, length);
+
+                            audioNames.Add(new Dictionary<string,string> {[name]= $"{Request.Scheme}://{Request.Host}/Class Videos/audio/{path}" });
+                        }
+					}
+					ClassVideoDto videoDto = new ClassVideoDto
+					{
+						VideoName = video,
+						VideoUrl = $"{Request.Scheme}://{Request.Host}/Class Videos/Videos/{video}.mp4",
+						AudiosUrl = audioNames
+
+					};
+					res.Add(videoDto);
+				}
+			}
+			return res;
+
 		}
 	}
 }

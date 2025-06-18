@@ -18,7 +18,6 @@ using GP.Focusi.Repository.Repositories;
 using GP.Focusi.Core.Entites;
 using GP.Focusi.Services.Roles;
 
-
 namespace GP.Focusi.API.Helper
 {
 	public static class DepndencyInjection
@@ -50,13 +49,7 @@ namespace GP.Focusi.API.Helper
 			services.AddEndpointsApiExplorer();
 			services.AddSwaggerGen(options=>
 			{
-				//options.SwaggerDoc(
-				//	"V1",
-				//	new OpenApiInfo
-				//	{
-				//		Title = "Focusi Api"
-				//	}
-				//	);
+				
 				var securityScheme = new OpenApiSecurityScheme
 				{
 					Name = "Authorithation",
@@ -107,11 +100,12 @@ namespace GP.Focusi.API.Helper
 			services.AddScoped<IStoryAndAdviceServices, StoryAndAdviceServices>();
 			services.AddScoped<IStoryAndAdviceRepository<Advice>,StoryAndAdviceRepository<Advice>>();
 			services.AddScoped<IStoryAndAdviceRepository<Story>, StoryAndAdviceRepository<Story>>();
-			services.AddScoped<IClassServices, ClassService>();
+            services.AddScoped<IStoryAndAdviceRepository<Videos>, StoryAndAdviceRepository<Videos>>();
+            services.AddScoped<IClassServices, ClassService>();
 			services.AddScoped<IChildTestService, ChildTestService>();
 			services.AddScoped<IChildTestRepository, ChildTestRepository>();
 			services.AddScoped<IRoleServices, RoleServices>();
-
+			services.AddScoped<IReportRepository, ReportRepository>();
 
 			return services;
 		}

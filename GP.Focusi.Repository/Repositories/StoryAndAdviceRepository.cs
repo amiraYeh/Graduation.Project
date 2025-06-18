@@ -42,6 +42,14 @@ namespace GP.Focusi.Repository.Repositories
 
 				return res;
 			}
+			else if (typeof(TEntity) == typeof(Videos))
+			{
+				var res = await _context.Set<Videos>().Where(V => V.ClassType == classType).Select(V => V.VideoName).ToListAsync();
+
+				if (res is null)
+					return null;
+				return res;
+			}
 			return null;
 		}
 	}

@@ -120,6 +120,9 @@ namespace GP.Focusi.Repository.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int>("GameTestScore")
+                        .HasColumnType("int");
+
                     b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -266,6 +269,36 @@ namespace GP.Focusi.Repository.Data.Migrations
                     b.HasIndex("TaskManagerId");
 
                     b.ToTable("TaskManagerItems");
+                });
+
+            modelBuilder.Entity("GP.Focusi.Core.Entites.Videos", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("ClassType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CorrectAnswers")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Questions")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VideoName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Videos");
                 });
 
             modelBuilder.Entity("GP.Focusi.Core.Entites.TaskManagerItems", b =>

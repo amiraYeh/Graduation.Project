@@ -27,6 +27,7 @@ namespace GP.Focusi.Repository.Data.Contexts
 		public DbSet<ParentTest> ParentTests { get; set; }
 		public DbSet<Story> Stories { get; set; }
 		public DbSet<Advice> Advices { get; set; }
+		public DbSet<Videos> Videos { get; set; }
 
 
 	}

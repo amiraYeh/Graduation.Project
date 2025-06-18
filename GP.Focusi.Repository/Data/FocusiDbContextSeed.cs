@@ -52,6 +52,22 @@ namespace GP.Focusi.Repository.Data
                     Console.WriteLine(res);
                 }
             }
+            if (_context.Videos.Count() == 0)
+            {
+                //D:\NewDownloads\VS&CB\C#\Graduation.Project.Solution\GP.Focusi.Repository\Data\DataSeeds\Videos.json
+                var videoData = File.ReadAllText(@"..\GP.Focusi.Repository\Data\DataSeeds\Videos.json");
+
+                var vides = JsonSerializer.Deserialize < List<Videos>>(videoData);
+
+                if(vides is null )
+                    return ;
+                if(vides.Count() > 0)
+                {
+                    await _context.Videos.AddRangeAsync(vides);
+                    int res = await _context.SaveChangesAsync();
+                    Console.WriteLine(res);
+                }
+            }
         }
     }
 }

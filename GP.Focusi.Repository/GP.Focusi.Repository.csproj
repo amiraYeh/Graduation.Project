@@ -7,7 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\DataSeed\**" />
+    <EmbeddedResource Remove="Data\DataSeed\**" />
+    <None Remove="Data\DataSeed\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GD.Core\GP.Focusi.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\Configurations\" />
+    <Folder Include="Identity\Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.14" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.14" />
   </ItemGroup>
 
 </Project>

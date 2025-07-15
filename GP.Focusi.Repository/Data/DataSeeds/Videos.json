@@ -1,0 +1,49 @@
+[
+  {
+    "ClassType": "A",
+    "VideoName": "A1shapes"
+
+  },
+  {
+    "ClassType": "A",
+    "VideoName": "A2shapes"
+
+  },
+  {
+    "ClassType": "A",
+    "VideoName": "A1animals"
+  },
+  {
+    "ClassType": "A",
+    "VideoName": "A2shapes"
+  },
+  {
+    "ClassType": "A",
+    "VideoName": "A2animals"
+  },
+  {
+    "ClassType": "B",
+    "VideoName": "shapesB1"
+  },
+  {
+    "ClassType": "B",
+    "VideoName": "shapesB2"
+  },
+  {
+    "ClassType": "B",
+    "VideoName": "animalsB1"
+  },
+  {
+    "ClassType": "C",
+    "VideoName": "shapesC1"
+  },
+  {
+    "ClassType": "C",
+    "VideoName": "shapesC2"
+  },
+  {
+    "ClassType": "C",
+    "VideoName": "animalsC1"
+  }
+
+]

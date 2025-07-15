@@ -1,34 +1,29 @@
 
+using GP.Focusi.API.Helper;
+using GP.Focusi.Repository.Repositories;
+using Microsoft.Extensions.Configuration;
+using sib_api_v3_sdk.Client;
+using StackExchange.Redis;
+
 namespace Graduation.Project.API
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static async Task Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
+			Configuration.Default.ApiKey.Add("api-key", builder.Configuration["BrevoEmailsApi:ApiKey"]);
+
 			// Add services to the container.
 
-			builder.Services.AddControllers();
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+			builder.Services.AddDependency(builder.Configuration);
 
 			var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
-			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
-			}
+			await app.configureMiddleWares();
 
-			app.UseHttpsRedirection();
-
-			app.UseAuthorization();
-
-
-			app.MapControllers();
 
 			app.Run();
 		}

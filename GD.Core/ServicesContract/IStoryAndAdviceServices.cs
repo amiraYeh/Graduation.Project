@@ -13,6 +13,7 @@ namespace GP.Focusi.Core.ServicesContract
 		Task<List<string>> AllStories(string email);
 		Task<List<string>> AllVideosByClassAsync(string email);
 		Task<string> getChildClass(string email);
+		//public List<string> getVideQuestions(string video);
 
     }
 }

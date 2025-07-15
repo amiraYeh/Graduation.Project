@@ -14,4 +14,8 @@
     <ProjectReference Include="..\GP.Focusi.Repository\GP.Focusi.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
 </Project>

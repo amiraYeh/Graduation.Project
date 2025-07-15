@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Text.Json;
 
 namespace GP.Focusi.API.Controllers
 {
@@ -23,15 +24,10 @@ namespace GP.Focusi.API.Controllers
 			_classServices = classServices;
 		}
 
-        //[Authorize(Roles = "ClassAccess")]
-        //[HttpGet]
-        //public IActionResult TestAccess()
-        //{
-        //    return Ok("You have Access to Class");
-        //}
+        
 
         [HttpGet("Advice")]
-		[Cached(10)]
+		//[Cached(10)]
         public async Task<IActionResult> getAdvicesAsync()
 		{
 			var childEmail = User.FindFirstValue(ClaimTypes.Email);
@@ -44,7 +40,7 @@ namespace GP.Focusi.API.Controllers
 			return Ok(res);
 		}
 		[HttpGet("Story")]
-		[Cached(10)]
+		//[Cached(10)]
         public async Task<IActionResult> getStoriesAsync()
 		{
 			var childEmail = User.FindFirstValue(ClaimTypes.Email);
@@ -154,11 +150,24 @@ namespace GP.Focusi.API.Controllers
 						AudiosUrl = audioNames
 
 					};
+					//videoDto.Questions = _storyAndAdviceServices.getVideQuestions(videoDto.VideoName);
 					res.Add(videoDto);
 				}
 			}
 			return res;
 
 		}
+		//private List<ClassVideoDto> getVideo(List<string> videos)
+		//{
+		//	foreach (var video in videos)
+		//	{
+		//		var videoDto = new ClassVideoDto 
+		//		{ 
+		//			VideoName = video,
+		//			AudiosUrl = new List<string> { $"{Request.Scheme}://{Request.Host}/Class Videos/audio/" }
+		//		};
+		//	}
+		//}
+		
 	}
 }

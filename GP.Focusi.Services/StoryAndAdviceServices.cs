@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace GP.Focusi.Services
@@ -71,5 +72,43 @@ namespace GP.Focusi.Services
 			string childClass = child.ChildClass;
 			return childClass;
 		}
+		//     public List<string> getVideQuestions(string video)
+		//     {
+		//         if (video is null)
+		//             return null;
+		// var res = new List<string>();
+		//         //D:\NewDownloads\VS&CB\C#\Graduation.Project.Solution\GP.Focusi.Services\StoryAndAdviceServices.cs
+		//         //D:\NewDownloads\VS&CB\C#\Graduation.Project.Solution\\Data\VideoQuestions.json
+		//         //D:\NewDownloads\VS&CB\C#\Graduation.Project.Solution\Graduation.Project.API\wwwroot\Class Videos\VideoQuestions.json
+		//         string json = File.ReadAllText(@".\wwwroot\Class Videos\VideoQuestions.json");
+
+		//         using JsonDocument doc = JsonDocument.Parse(json);
+		//JsonElement root = doc.RootElement;
+
+		//         foreach (JsonElement element in doc.RootElement.EnumerateArray())
+		//{
+		//	string videoName = element.GetProperty("videoName").GetString();
+		//	string questionTag = "";
+
+		//             if (root.TryGetProperty("Tags", out JsonElement tagsElement) && tagsElement.ValueKind == JsonValueKind.Array)
+		//	{
+		//		foreach (JsonElement tag in tagsElement.EnumerateArray())
+		//		{
+		//			if(tag.GetString() == "Questions")
+		//				questionTag = tag.GetString();
+		//		}
+		//	}
+		//             if (videoName == video)
+		//		res.Add(questionTag[0].ToString());
+
+		//		//string questions = element.GetProperty("Questions").geto
+
+		//}
+		//             //foreach (var question in questions)
+		//             //{
+		//             //	if(question.)
+		//             //}
+		//             return res;
+		//     }
 	}
 }

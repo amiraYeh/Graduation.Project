@@ -11,5 +11,6 @@ namespace GP.Focusi.Core.DTOs
         public string VideoName { get; set; }
         public string VideoUrl { get; set; }
         public object AudiosUrl { get; set; }
+        //public List<string> Questions { get; set; }
     }
 }
